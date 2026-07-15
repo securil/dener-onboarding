@@ -12,7 +12,9 @@
     --poly:#7B3FE4; --red:#C0392B;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#F3EDE2;color:var(--ink);height:100dvh;display:flex;flex-direction:column}
+  body{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#F3EDE2;color:var(--ink);height:100dvh;display:flex;flex-direction:column;align-items:center}
+  /* 문서형 가이드처럼 전체 폭을 1080px로 제한하고 가운데 정렬 */
+  body>header,body>#stepbar,body>main,body>#choices,body>footer{width:100%;max-width:1080px}
 
   header{background:var(--dark);color:#fff;padding:12px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;flex:none}
   header .hrow{display:flex;align-items:center;gap:12px}
