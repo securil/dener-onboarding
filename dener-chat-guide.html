@@ -14,13 +14,17 @@
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#F3EDE2;color:var(--ink);height:100dvh;display:flex;flex-direction:column}
 
-  header{background:var(--dark);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;flex:none}
+  header{background:var(--dark);color:#fff;padding:12px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;flex:none}
+  header .hrow{display:flex;align-items:center;gap:12px}
   .avatar{width:42px;height:42px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+  header .t{text-align:center}
   header .t b{display:block;font-size:15px}
   header .t span{font-size:11.5px;color:#C9B78F}
-  header .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+  header .hactions{display:flex;gap:8px;align-items:center;justify-content:center}
   .hbtn{background:var(--dark2);color:#E8DCC8;border:none;border-radius:14px;padding:7px 13px;font-size:12px;cursor:pointer;font-family:inherit}
   .hbtn:hover{background:#4a3720}
+  .hbtn.doc{background:var(--gold);color:var(--dark);font-weight:800}
+  .hbtn.doc:hover{background:#f5b23c}
   #stepbar{height:4px;background:var(--dark2);flex:none}
   #stepfill{height:100%;width:0;background:var(--gold);transition:width .4s}
 
@@ -62,10 +66,12 @@
 <body>
 
 <header>
-  <div class="avatar">⛏</div>
-  <div class="t"><b>몰리 — 광맥의 안내자</b><span id="stage">Dener 되기 · 대화형 가이드</span></div>
-  <div class="right">
-    <button class="hbtn" onclick="location.href='dener-onboarding.html'">📖 문서형 가이드</button>
+  <div class="hrow">
+    <div class="avatar">⛏</div>
+    <div class="t"><b>몰리 — 광맥의 안내자</b><span id="stage">Dener 되기 · 대화형 가이드</span></div>
+  </div>
+  <div class="hactions">
+    <button class="hbtn doc" onclick="location.href='dener-onboarding.html'">📖 문서형 가이드</button>
     <button class="hbtn" onclick="restart()">↺ 처음부터</button>
   </div>
 </header>
