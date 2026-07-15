@@ -1,0 +1,9 @@
+# 기본적으로 모든 파일 제외 (대외비 문서 유출 방지)
+/*
+
+# 랜딩페이지 배포에 필요한 파일만 화이트리스트로 허용
+!.gitignore
+!index.html
+!dener-onboarding.html
+!dener-chat-guide.html
+!README.md

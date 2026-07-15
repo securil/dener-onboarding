@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>몰리와 함께하는 Dener 되기 — 대화형 가이드</title>
+<meta name="description" content="질문에 답하면서 따라가는 Dener·총판 온보딩 대화형 가이드. 내 상황에 맞는 단계만 골라서 안내받으세요.">
+<style>
+  :root{
+    --dark:#261A0D; --dark2:#3A2A16; --gold:#E8A020; --gold-d:#9C6B06;
+    --ink:#2B2418; --mut:#8C8272; --tint:#FBF5EA; --line:#EDE5D6;
+    --poly:#7B3FE4; --red:#C0392B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#F3EDE2;color:var(--ink);height:100dvh;display:flex;flex-direction:column}
+
+  header{background:var(--dark);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;flex:none}
+  .avatar{width:42px;height:42px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+  header .t b{display:block;font-size:15px}
+  header .t span{font-size:11.5px;color:#C9B78F}
+  header .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+  .hbtn{background:var(--dark2);color:#E8DCC8;border:none;border-radius:14px;padding:7px 13px;font-size:12px;cursor:pointer;font-family:inherit}
+  .hbtn:hover{background:#4a3720}
+  #stepbar{height:4px;background:var(--dark2);flex:none}
+  #stepfill{height:100%;width:0;background:var(--gold);transition:width .4s}
+
+  main{flex:1;overflow-y:auto;padding:20px 14px 12px;-webkit-overflow-scrolling:touch}
+  .chat{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+
+  .row{display:flex;gap:8px;align-items:flex-end}
+  .row.bot{justify-content:flex-start}
+  .row.user{justify-content:flex-end}
+  .mini{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .bubble{max-width:82%;padding:11px 15px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-line;box-shadow:0 2px 6px rgba(38,26,13,.07)}
+  .bot .bubble{background:#fff;border-bottom-left-radius:5px}
+  .user .bubble{background:var(--gold);color:var(--dark);font-weight:700;border-bottom-right-radius:5px}
+  .bubble b{color:var(--gold-d)}
+  .user .bubble b{color:var(--dark)}
+  .bubble a{color:var(--poly);font-weight:700}
+  .bubble .warn{display:block;margin-top:8px;background:#FBEAE6;color:var(--red);font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:10px}
+  .bubble .tip{display:block;margin-top:8px;background:var(--tint);color:#5A5142;font-size:12.5px;padding:8px 12px;border-radius:10px}
+  .bubble .steps{display:block;margin-top:8px;background:var(--tint);border-radius:10px;padding:10px 12px 10px 14px;font-size:13px}
+  .bubble .steps i{display:block;font-style:normal;padding:4px 0;color:#4A4234}
+  .bubble .steps i::before{content:"▸ ";color:var(--gold)}
+
+  .typing{display:inline-flex;gap:4px;padding:14px 16px;background:#fff;border-radius:16px;border-bottom-left-radius:5px}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#C9B78F;animation:bl 1s infinite}
+  .typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+  @keyframes bl{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+
+  #choices{flex:none;background:linear-gradient(to top,#F3EDE2 80%,transparent);padding:10px 14px 18px}
+  .ch-in{max-width:680px;margin:0 auto;display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}
+  .choice{border:2px solid var(--gold);background:#fff;color:var(--gold-d);font-weight:800;font-size:13.5px;padding:11px 18px;border-radius:22px;cursor:pointer;font-family:inherit;transition:all .15s}
+  .choice:hover{background:var(--gold);color:var(--dark)}
+  .choice.sub{border-color:var(--line);color:var(--mut);font-weight:600}
+  .choice.sub:hover{background:var(--tint);color:var(--gold-d)}
+
+  .badge-done{display:inline-block;background:#E6F3E6;color:#2E7D32;font-size:12px;font-weight:800;padding:3px 10px;border-radius:10px;margin-right:4px}
+  footer{flex:none;text-align:center;font-size:10.5px;color:var(--mut);padding:6px 12px 10px;background:#F3EDE2}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="avatar">⛏</div>
+  <div class="t"><b>몰리 — 광맥의 안내자</b><span id="stage">Dener 되기 · 대화형 가이드</span></div>
+  <div class="right">
+    <button class="hbtn" onclick="location.href='dener-onboarding.html'">📖 문서형 가이드</button>
+    <button class="hbtn" onclick="restart()">↺ 처음부터</button>
+  </div>
+</header>
+<div id="stepbar"><div id="stepfill"></div></div>
+
+<main id="main"><div class="chat" id="chat"></div></main>
+
+<div id="choices"><div class="ch-in" id="chin"></div></div>
+
+<footer>본 가이드는 생태계 참여 절차를 안내하는 정보성 자료이며 투자 권유가 아닙니다 · 리워드는 보장되지 않습니다 · © 2026 MolePin Community</footer>
+
+<script>
+/* ================= 대화 시나리오 ================= */
+const FLOW = {
+  start:{p:5,m:[
+    "안녕하세요! 저는 엘도라시아 광맥의 안내자, <b>몰리</b>예요 ⛏",
+    "무너진 왕국을 지킬 <b>Dener(데너)</b>가 되는 길, 제가 옆에서 하나씩 물어보면서 안내할게요.\n모르는 단계만 골라서 설명하니까 훨씬 빨라요!",
+    "먼저 하나만 물어볼게요. <b>Dener가 뭔지</b>는 알고 계세요?"
+  ],c:[["네, 알아요! 바로 시작해요","q_wallet"],["아니요, 설명해 주세요","what_dener"]]},
+
+  what_dener:{p:8,m:[
+    "좋아요, 1분 설명 들어갑니다 🙂",
+    "<b>Dener</b>는 MOL 생태계의 파트너예요. MOL이라는 코인을 <b>2,000만 개</b>(약 $620 상당) 보유하면 자격이 열리고, 블록체인에 '서임' 기록이 남아요.",
+    "Dener가 되면 이런 게 열려요:<span class='steps'><i>매일 MOL↔BNB 스왑 자격</i><i>내가 소개한 분들의 참여 금액 기준 리워드 (10%/5%)</i><i>광고 보고 MOL 캐는 미션</i></span>",
+    "<span class='tip'>리워드는 활동의 결과이고 보장되지 않아요. 무리하지 않는 범위에서 참여하는 게 원칙!</span>준비되셨으면 시작해 볼까요?"
+  ],c:[["좋아요, 시작!","q_wallet"]]},
+
+  /* ---------- STEP 1: 지갑 ---------- */
+  q_wallet:{p:12,stage:"1/6 지갑",m:[
+    "STEP 1이에요. Dener가 되려면 <b>BNB와 POL</b> 두 가지 코인이 필요하고, 그걸 담을 <b>내 지갑</b>이 있어야 해요.",
+    "혹시 <b>MetaMask(메타마스크)</b> 지갑, 이미 가지고 계세요? 🦊"
+  ],c:[["네, 있어요!","q_network"],["아니요, 없어요","how_wallet"],["메타마스크가 뭐죠?","what_wallet"]]},
+
+  what_wallet:{p:14,m:[
+    "메타마스크는 <b>내 스마트폰·브라우저 속 코인 금고</b>예요. 여우 아이콘이 트레이드마크죠 🦊",
+    "은행 앱과 비슷한데 딱 하나 달라요 — <b>열쇠(시드 문구 12단어)를 은행이 아니라 내가 직접 보관</b>해요. 그래서 그 12단어가 정말 중요합니다.",
+    "만드는 법, 바로 알려드릴까요?"
+  ],c:[["네, 만들래요","how_wallet"]]},
+
+  how_wallet:{p:16,m:[
+    "따라 해 보세요!<span class='steps'><i><b>PC:</b> 크롬 웹스토어에서 'MetaMask' 검색 → 여우 아이콘 확인 → Chrome에 추가</i><i><b>모바일:</b> 앱스토어에서 MetaMask 공식 앱 설치</i><i>'새 지갑 생성' → 비밀번호 설정</i><i>시드 문구 12단어가 나오면 <b>종이에</b> 적어 보관</i></span>",
+    "<span class='warn'>⚠️ 시드 문구 12단어 = 전 재산의 열쇠!\n사진 촬영 ❌ 카톡 전송 ❌ 누가 물어봐도 알려주기 ❌\n물어보는 사람은 100% 사기꾼이에요.</span>",
+    "공식 설치 가이드가 필요하면 <a href='https://support.metamask.io/start/getting-started-with-metamask/' target='_blank'>MetaMask 공식 문서</a>를 참고하세요.",
+    "설치와 지갑 생성, 끝나셨나요?"
+  ],c:[["네, 만들었어요!","q_network"],["나중에 하고 계속 들을게요","q_network"]]},
+
+  /* ---------- 네트워크 ---------- */
+  q_network:{p:22,stage:"1/6 지갑",m:[
+    "좋아요! 그런데 지갑을 만들면 길을 두 개 뚫어야 해요 🛣",
+    "코인은 '체인'이라는 길로 다니는데, 우리는 <b>BNB 체인(노란 길)</b>과 <b>Polygon(보라 길)</b> 두 개를 써요.\n지갑은 하나, 길만 바꿔 타는 거예요.",
+    "MetaMask에 이 두 네트워크, 추가되어 있나요?"
+  ],c:[["네, 둘 다 있어요","q_bnb"],["어떻게 추가하죠?","how_network"]]},
+
+  how_network:{p:24,m:[
+    "아주 쉬워요. 두 가지 방법 중 편한 걸로!<span class='steps'><i><b>방법 1:</b> MetaMask 상단 네트워크 선택 → '네트워크 추가' → 목록에서 BNB Smart Chain / Polygon 선택</i><i><b>방법 2:</b> <a href='https://chainlist.org' target='_blank'>chainlist.org</a> 접속 → 검색 → Connect Wallet → Add to MetaMask (자동 추가)</i></span>",
+    "<span class='tip'>공식 한국어 가이드: <a href='https://support.metamask.io/ko/networks-and-sidechains/managing-networks/add-a-network-using-chainlist/' target='_blank'>체인리스트로 네트워크 추가하기</a></span>",
+    "추가 완료되셨나요?"
+  ],c:[["완료했어요!","q_bnb"]]},
+
+  /* ---------- STEP 2: BNB ---------- */
+  q_bnb:{p:30,stage:"2/6 BNB 마련",m:[
+    "<span class='badge-done'>✓ 지갑 준비 완료</span>STEP 2로 가요!",
+    "이제 <b>스왑에 쓸 BNB</b>가 필요해요. Dener 기준으로 <b>약 $620 상당 + 수수료 여유분</b>이요.",
+    "지갑(MetaMask)에 BNB, 이미 들어 있나요?"
+  ],c:[["네, 충분히 있어요","q_pol"],["아니요, 마련해야 해요","q_exchange"]]},
+
+  q_exchange:{p:34,m:[
+    "그럼 거래소에서 마련해서 지갑으로 보내면 돼요.",
+    "혹시 <b>이용 중인 거래소</b>가 있으세요?"
+  ],c:[["바이낸스","ex_binance"],["빗썸","ex_bithumb"],["업비트","ex_upbit"],["거래소가 처음이에요","ex_none"]]},
+
+  ex_none:{p:36,m:[
+    "괜찮아요, 다들 처음이 있죠 🙂",
+    "국내 거래소는 <b>신분증 + 본인 명의 은행 계좌</b>만 있으면 가입할 수 있어요. 인증에 하루 정도 걸릴 수 있으니 미리 해두는 게 좋아요.",
+    "가입 가이드는 여기 잘 정리돼 있어요:<span class='steps'><i>업비트: <a href='https://support.upbit.com/hc/ko/articles/900006825383' target='_blank'>공식 가입 안내</a> (케이뱅크 계좌 필요)</i><i>빗썸: <a href='https://cafe.bithumb.com/view/board-contents/1640937' target='_blank'>공식 초보자 가이드</a> (농협/KB 계좌)</i><i>바이낸스: <a href='https://oppapost.com/442' target='_blank'>가입 방법 블로그</a> (해외, 이메일 가입)</i></span>",
+    "가입하실 거래소를 고르셨다면, 어디로 진행할까요?"
+  ],c:[["바이낸스로 할게요","ex_binance"],["빗썸으로 할게요","ex_bithumb"],["업비트로 할게요","ex_upbit"]]},
+
+  ex_binance:{p:40,m:[
+    "바이낸스는 <b>BNB를 직접</b> 살 수 있어서 제일 간단해요!<span class='steps'><i>가입 + 신원인증(KYC) — 신분증 촬영, 최대 48시간</i><i>원화·USDT 입금 후 BNB로 교환</i><i>POL도 $10~20 상당 함께 마련 (도메인 등록·수수료용)</i></span>",
+    "그다음이 중요해요 — <b>지갑으로 보내기(출금)</b>:<span class='steps'><i>MetaMask에서 내 주소 복사 (0x…)</i><i>바이낸스 출금 → BNB → 네트워크는 반드시 <b>BSC (BEP-20)</b></i><i>POL 출금 → 네트워크 <b>Polygon</b></i><i>먼저 소액 테스트 → 도착 확인 → 나머지 전송</i></span>",
+    "<span class='warn'>⚠️ 네트워크를 잘못 고르면 코인을 잃을 수 있어요. 출금 직전 두 번 확인!</span>",
+    "MetaMask에 BNB가 도착했나요?"
+  ],c:[["도착 확인했어요!","q_pol"],["출금이 막혀요 (트래블룰?)","travel_rule"]]},
+
+  ex_bithumb:{p:40,m:[
+    "빗썸도 <b>BNB를 직접</b> 다루는 거래소예요.<span class='steps'><i>가입 + 계좌 연결 (<a href='https://support.bithumb.com/hc/ko/articles/51036139415321' target='_blank'>공식 안내</a>)</i><i>원화 입금 → BNB로 교환</i><i>POL도 $10~20 상당 함께 마련</i></span>",
+    "<span class='warn'>⚠️ 빗썸에서 MetaMask(개인지갑)로 출금하려면 트래블룰 때문에 지갑 등록 심사가 필요할 수 있어요. '개인 지갑 등록' 메뉴를 먼저 확인하세요.</span>",
+    "출금할 때 네트워크는 <b>BNB → BSC(BEP-20)</b>, <b>POL → Polygon</b>을 선택하고, 꼭 소액 테스트 먼저!",
+    "MetaMask에 BNB가 도착했나요?"
+  ],c:[["도착 확인했어요!","q_pol"],["출금이 막혀요 (트래블룰?)","travel_rule"]]},
+
+  ex_upbit:{p:40,m:[
+    "업비트는 한 가지 특징이 있어요 — <b>BNB를 직접 다루지 않아요.</b> 그래서 두 가지 길이 있어요.",
+    "<b>길 A (추천):</b> 업비트에서 전송 빠른 코인(XRP, TRX 등)으로 교환 → <b>바이낸스로 전송</b> → 바이낸스에서 BNB로 교환 → MetaMask로 출금(BSC).",
+    "<b>길 B:</b> POL은 업비트에서 직접 다뤄요 → POL을 Polygon 네트워크로 MetaMask에 바로 출금하면 돼요.",
+    "<span class='tip'>업비트 → 개인지갑 출금은 <a href='https://support.upbit.com/hc/ko/articles/6713306957977' target='_blank'>개인지갑주소 등록</a>(트래블룰)이 먼저 필요해요. MetaMask는 온라인 등록 가능!</span>",
+    "BNB와 POL, MetaMask에 도착했나요?"
+  ],c:[["도착 확인했어요!","q_pol"],["출금이 막혀요 (트래블룰?)","travel_rule"]]},
+
+  travel_rule:{p:42,m:[
+    "그건 <b>트래블룰</b> 때문일 가능성이 커요. 100만원 이상 코인을 개인 지갑으로 보낼 때 지갑을 미리 등록해야 하는 국내 규정이에요.",
+    "해결법:<span class='steps'><i>거래소 앱에서 '개인 지갑 등록'(화이트리스트) 메뉴 찾기</i><i>MetaMask 주소 등록 + 본인 지갑 인증</i><i>업비트: <a href='https://support.upbit.com/hc/ko/articles/6713306957977' target='_blank'>온라인 등록 가능</a> / 빗썸: 고객센터 심사가 필요할 수 있음</i><i>등록 승인 후 다시 출금 시도</i></span>",
+    "거래소별 정책 비교는 <a href='https://www.tokenpost.kr/article-85909' target='_blank'>이 정리 글</a>이 좋아요.",
+    "등록하고 출금까지 완료되셨나요?"
+  ],c:[["네, 해결됐어요!","q_pol"]]},
+
+  /* ---------- POL ---------- */
+  q_pol:{p:48,stage:"2/6 BNB 마련",m:[
+    "<span class='badge-done'>✓ BNB 준비 완료</span>",
+    "참, <b>POL</b>(폴리곤 코인)도 소액($10~20 상당) 필요해요. .dex 이름표를 만들 때 등록비와 통행료(가스비)로 쓰거든요.",
+    "POL도 지갑에 있나요?"
+  ],c:[["네, 있어요","q_dex"],["아직요, 어떻게 준비하죠?","how_pol"]]},
+
+  how_pol:{p:50,m:[
+    "간단해요!<span class='steps'><i>업비트·빗썸: POL 검색 → 소액 교환 → <b>Polygon 네트워크</b>로 MetaMask 출금</i><i>바이낸스: POL 교환 → 출금 네트워크 Polygon 선택</i></span>",
+    "<span class='tip'>MetaMask에서 네트워크를 Polygon으로 바꿔야 POL 잔액이 보여요. 안 보인다고 당황하지 마세요!</span>",
+    "준비되셨나요?"
+  ],c:[["준비 완료!","q_dex"]]},
+
+  /* ---------- STEP 3: .dex ---------- */
+  q_dex:{p:56,stage:"3/6 .dex 이름표",m:[
+    "<span class='badge-done'>✓ 코인 준비 끝</span>이제 재미있는 단계예요 🎨",
+    "복잡한 지갑 주소(0x3f8a…) 대신 쓸 <b>나만의 이름표, .dex 도메인</b>을 만들 차례!\n예를 들면 <b>roy.dex</b> 같은 거요. 추천 링크에도 이 이름이 쓰여요.",
+    "혹시 벌써 .dex 이름 가지고 계세요?"
+  ],c:[["네, 있어요!","q_primary"],["아직요, 만들래요","how_dex"]]},
+
+  how_dex:{p:60,m:[
+    "가볼까요? 여기서부터는 <b>보라 길(Polygon)</b>이에요.<span class='steps'><i><a href='https://dexignation.com/ko' target='_blank'>dexignation.com/ko</a> 접속 (모바일은 MetaMask 앱 속 브라우저로!)</i><i>우측 상단 '지갑 연결' → Polygon 전환 승인</i><i>원하는 이름 검색 → 기간 선택(1·3·5·10·15년) → POL/USDT/USDC로 결제</i></span>",
+    "등록할 때 서명을 <b>두 번</b> 해요: ① 신청 서명 → ② 잠깐 대기 → ③ 확정 서명.\n중간에 창 닫지 말고 끝까지!",
+    "<span class='tip'>연결 자체는 '명함 보여주기'라 코인이 빠져나가지 않아요. 코인이 움직이는 건 '서명' 눌렀을 때뿐.</span>",
+    "이름 등록 완료되셨나요?"
+  ],c:[["완료! 내 이름 생겼어요","q_primary"]]},
+
+  /* ---------- STEP 4: 대표 네임 + BNB 지갑 ---------- */
+  q_primary:{p:68,stage:"4/6 대표 네임",m:[
+    "<span class='badge-done'>✓ .dex 이름 확보</span>",
+    "이제 그 이름을 <b>대표 네임</b>으로 지정하고, 이름 뒤에 <b>리워드 받을 BNB 지갑 주소</b>를 적어야 해요.\n이걸 해야 리워드가 내 지갑으로 정산돼요!",
+    "대표 네임 지정 + BNB 지갑 등록, 완료하셨나요?"
+  ],c:[["둘 다 했어요","q_distributor"],["방법 알려주세요","how_primary"]]},
+
+  how_primary:{p:72,m:[
+    "이어서 DEXignation에서 진행해요.<span class='steps'><i><b>대표 네임:</b> 내 계정 → 보유 도메인 → '대표 네임으로 지정' → 서명</i><i><b>BNB 지갑:</b> 내 도메인 → '레코드 관리' → 주소 추가 → 체인에서 <b>BNB(BSC)</b> 선택 → 주소 입력 → 서명</i><i>digmol.com 대시보드에서 정상 표시 확인</i></span>",
+    "<span class='warn'>⚠️ 지갑 주소는 꼭 복사·붙여넣기로! 한 글자만 틀려도 리워드를 받지 못해요.</span>",
+    "완료되셨나요?"
+  ],c:[["완료했어요!","q_distributor"]]},
+
+  /* ---------- STEP 5: 총판 확인 + 스왑 ---------- */
+  q_distributor:{p:78,stage:"5/6 MOL 스왑",m:[
+    "<span class='badge-done'>✓ 이름표 설정 끝</span>드디어 마지막 관문이에요!",
+    "스왑 전에 딱 하나 — <b>나를 안내해 준 총판의 .dex 이름</b>을 알아야 해요.\n스왑 화면에 입력하면 <b>할인(최대 15%)</b>을 받고, 안내한 분께 정당한 보상이 가요.",
+    "총판의 .dex 이름, 알고 계세요?"
+  ],c:[["네, 알아요!","how_swap"],["모르는데요…","no_distributor"]]},
+
+  no_distributor:{p:80,m:[
+    "괜찮아요, 두 가지 방법이 있어요:<span class='steps'><i>나를 이 생태계로 안내해 준 분이 있다면 → 그분께 \".dex 이름이 뭐예요?\" 하고 물어보세요</i><i>안내해 준 사람이 없다면 → 운영팀(punditcode@gmail.com)에 문의하면 연결해 줘요</i></span>",
+    "<span class='tip'>입력하지 않아도 스왑은 되지만, 할인을 못 받으니 확인하고 진행하는 걸 추천해요.</span>",
+    "확인되셨으면 스왑하러 가요!"
+  ],c:[["확인했어요, 스왑하러 가요","how_swap"]]},
+
+  how_swap:{p:86,m:[
+    "자, <b>노란 길(BNB 체인)</b>로 갈아타고 광맥으로 내려갑니다 ⛏<span class='steps'><i><a href='https://digmol.com' target='_blank'>digmol.com</a> 접속 → 지갑 연결 → BSC 전환</i><i>스왑(서임) 화면에서 <b>'할인 도메인(.dex)' 칸에 총판 이름 입력</b></i><i>넣을 BNB 입력 → 받을 MOL 자동 계산 확인</i><i>서명 한 번 → MOL이 내 지갑으로!</i></span>",
+    "보유 MOL이 <b>2,000만</b>에 닿는 순간 — 서임 게이지가 100%가 되면서 <b>Dener 완료</b>예요 🎉",
+    "<span class='tip'>교환 비율은 컨트랙트에 새겨져 있어 흥정도 차별도 없어요. 정확한 비율은 스왑 화면 표시값 기준!</span>",
+    "서임까지 완료되셨나요?"
+  ],c:[["🎉 Dener 됐어요!","done_dener"],["일단 여기까지 볼게요","summary"]]},
+
+  /* ---------- 완료 & 총판 분기 ---------- */
+  done_dener:{p:92,stage:"6/6 활동 시작",m:[
+    "축하합니다, 수호자님! 🛡✨\n엘도라시아의 광맥에 당신의 서임이 새겨졌어요.",
+    "이제부터 일과는 간단해요:<span class='steps'><i>내 추천 링크 공유: <b>app.digmol.com/ref?ref=내이름.dex</b></i><i>매일 밤 10시 집계 마감 → 11시부터 리워드 수령(Claim) 가능</i><i>안 찾아도 사라지지 않고 온체인에 쌓여요</i></span>",
+    "마지막으로 하나 물어볼게요 — <b>총판(에반젤리스트)</b>까지 가볼 생각 있으세요?\n참여자가 스왑할 때 나를 '지정'하면 참여 금액의 5%를 받는 역할이에요."
+  ],c:[["총판도 알려주세요!","how_evangelist"],["Dener로 충분해요","summary"]]},
+
+  how_evangelist:{p:96,m:[
+    "좋은 선택이에요. 총판은 이렇게 준비해요:<span class='steps'><i>보유 MOL을 <b>3,000만</b>까지 추가 스왑 (약 $310 상당 추가)</i><i><b>관리자 등록 필수!</b> punditcode@gmail.com 으로 총판 등록·활성화 요청</i><i>digmol.com '내 총판 대시보드'에서 할인율(0~15%) 설정 — 내 보상 5%는 자동</i></span>",
+    "총판 활동의 핵심은 딱 한마디예요:\n<b>\"스왑 화면 할인 칸에 제 이름(내이름.dex)을 넣으면 할인받으세요!\"</b>\n지정은 선택이라, 이 안내가 없으면 리워드도 발생하지 않아요.",
+    "<span class='tip'>레퍼러 리워드와 총판 리워드는 별개 축이라, 내가 소개한 분이 나를 지정하면 같은 참여 건에서 둘 다 받을 수 있어요 (1건 기준 최대 25%, 예시이며 보장되지 않음).</span>"
+  ],c:[["완벽해요, 정리해 주세요","summary"]]},
+
+  summary:{p:100,stage:"완료",m:[
+    "오늘 함께 걸은 길을 정리할게요 📋<span class='steps'><i>① MetaMask 지갑 만들기 + BSC·Polygon 네트워크</i><i>② 거래소에서 BNB·POL 마련 → 지갑으로 (트래블룰 확인!)</i><i>③ dexignation.com에서 .dex 이름 등록 (보라 길)</i><i>④ 대표 네임 지정 + 리워드 받을 BNB 지갑 등록</i><i>⑤ digmol.com에서 총판 .dex 입력 → BNB→MOL 스왑 → 2,000만 = 서임</i><i>⑥ (선택) 3,000만 + 관리자 등록 = 총판</i></span>",
+    "더 자세한 화면별 설명과 영상은 <a href='dener-onboarding.html'>문서형 가이드</a>에 있어요.",
+    "<span class='tip'>기억할 것 세 가지: 시드 문구는 종이에만 · 주소는 복사-붙여넣기 · 출금 전 네트워크 확인. 그리고 — 무리하지 않는 범위에서, 즐겁게 참여하세요 🙂</span>",
+    "궁금한 게 생기면 언제든 처음부터 다시 물어보세요. 광맥에서 기다릴게요! ⛏"
+  ],c:[["↺ 처음부터 다시","restart"],["📖 문서형 가이드 열기","goto_docs"]]},
+};
+
+/* ================= 엔진 ================= */
+const chat = document.getElementById('chat');
+const chin = document.getElementById('chin');
+const fill = document.getElementById('stepfill');
+const stage = document.getElementById('stage');
+const main = document.getElementById('main');
+let busy = false;
+
+function scrollDown(){ main.scrollTop = main.scrollHeight; }
+
+function botBubble(html){
+  const row = document.createElement('div'); row.className = 'row bot';
+  row.innerHTML = '<div class="mini">⛏</div><div class="bubble">' + html + '</div>';
+  chat.appendChild(row); scrollDown();
+}
+function userBubble(text){
+  const row = document.createElement('div'); row.className = 'row user';
+  const b = document.createElement('div'); b.className = 'bubble'; b.textContent = text;
+  row.appendChild(b); chat.appendChild(row); scrollDown();
+}
+function typing(){
+  const row = document.createElement('div'); row.className = 'row bot';
+  row.innerHTML = '<div class="mini">⛏</div><div class="typing"><i></i><i></i><i></i></div>';
+  chat.appendChild(row); scrollDown(); return row;
+}
+
+function show(nodeId){
+  const node = FLOW[nodeId];
+  if(!node) return;
+  busy = true; chin.innerHTML = '';
+  if(node.p) fill.style.width = node.p + '%';
+  if(node.stage) stage.textContent = 'Dener 되기 · ' + node.stage;
+  let i = 0;
+  (function next(){
+    if(i >= node.m.length){
+      busy = false;
+      node.c.forEach(function(ch, idx){
+        const btn = document.createElement('button');
+        btn.className = 'choice' + (idx > 0 && node.c.length > 2 && idx === node.c.length - 1 ? ' sub' : '');
+        btn.textContent = ch[0];
+        btn.onclick = function(){ if(busy) return; pick(ch[0], ch[1]); };
+        chin.appendChild(btn);
+      });
+      scrollDown(); return;
+    }
+    const t = typing();
+    setTimeout(function(){
+      t.remove(); botBubble(node.m[i]); i++;
+      setTimeout(next, 250);
+    }, Math.min(500 + node.m[i].length * 3, 1300));
+  })();
+}
+
+function pick(label, next){
+  userBubble(label);
+  if(next === 'restart'){ setTimeout(restart, 400); return; }
+  if(next === 'goto_docs'){ location.href = 'dener-onboarding.html'; return; }
+  setTimeout(function(){ show(next); }, 350);
+}
+
+function restart(){
+  chat.innerHTML = ''; chin.innerHTML = ''; fill.style.width = '0';
+  stage.textContent = 'Dener 되기 · 대화형 가이드';
+  show('start');
+}
+
+show('start');
+</script>
+</body>
+</html>
