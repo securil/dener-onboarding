@@ -83,7 +83,7 @@
   .video-slot .play{width:54px;height:54px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
   .video-slot b{font-size:14px}
   .video-slot span{font-size:12px;color:var(--mut)}
-  .video-wrap iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px}
+  .video-wrap iframe,.video-wrap video{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000;display:block}
 
   details.storyboard{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:0 16px}
   details.storyboard summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--poly);padding:12px 0;list-style:none}
@@ -219,17 +219,15 @@
         <div class="callout tip"><b>출금은 STEP 2에서!</b> 지갑을 먼저 만들고 주소를 받은 뒤 출금합니다. 순서대로 진행하세요.</div>
       </div>
       <div>
-        <div class="video-box" data-video-id=""><!-- YouTube ID 입력 시 자동 재생 슬롯으로 전환 -->
+        <div class="video-box" data-video-src="video1.mp4">
           <div class="video-slot"><div class="play">▶</div><b>영상 1 — 거래소에서 BNB·POL 준비하기</b><span>영상 준비 중 · 업로드 후 이 자리에 표시됩니다</span></div>
         </div>
         <details class="storyboard">
-          <summary>영상 제작 가이드 (촬영 콘티)</summary>
+          <summary>영상 요약 (이 영상에서 다루는 내용)</summary>
           <ul>
-            <li>거래소 앱 가입 → KYC 인증 화면 (개인정보 모자이크)</li>
-            <li>원화 입금 → BNB 검색 → 시장가 매수 과정</li>
-            <li>POL 소액 매수</li>
-            <li>'개인 지갑 등록(트래블룰)' 메뉴 위치 안내</li>
-            <li>러닝타임 3~4분 권장, 자막 필수</li>
+            <li>거래소 가입·KYC 인증 후 원화를 입금하는 흐름</li>
+            <li>BNB를 시장가로 매수하고, POL도 소액 함께 준비</li>
+            <li>개인 지갑(MetaMask) 출금을 위한 '개인 지갑 등록(트래블룰)' 메뉴 위치</li>
           </ul>
         </details>
       </div>
@@ -309,17 +307,15 @@
         <div class="callout warn">⚠️ 네트워크를 잘못 선택해 보내면 코인을 잃을 수 있습니다. 출금 직전 '네트워크' 항목을 두 번 확인하세요.</div>
       </div>
       <div>
-        <div class="video-box" data-video-id="">
+        <div class="video-box" data-video-src="video2.mp4">
           <div class="video-slot"><div class="play">▶</div><b>영상 2 — MetaMask 설치부터 입금까지</b><span>영상 준비 중</span></div>
         </div>
         <details class="storyboard">
-          <summary>영상 제작 가이드 (촬영 콘티)</summary>
+          <summary>영상 요약 (이 영상에서 다루는 내용)</summary>
           <ul>
-            <li>크롬 웹스토어 → MetaMask 설치 → 지갑 생성 (시드 문구는 블러 처리 + "종이에 적으세요" 강조 컷)</li>
-            <li>네트워크 추가: BSC·Polygon (chainlist.org 경로 포함)</li>
-            <li>주소 복사 → 거래소 출금 화면 → 네트워크 선택 강조(빨간 박스)</li>
-            <li>테스트 출금 → MetaMask 잔액 도착 확인</li>
-            <li>러닝타임 4~5분 권장</li>
+            <li>크롬 웹스토어에서 MetaMask 설치 → 새 지갑 생성, 시드 문구 12단어는 종이에 보관</li>
+            <li>BNB Smart Chain·Polygon 네트워크 추가 (chainlist.org 활용)</li>
+            <li>내 주소 복사 → 거래소 출금 시 네트워크(BEP-20/Polygon) 확인 → 소액 테스트 후 전액 출금</li>
           </ul>
         </details>
         <div class="callout tip"><b>연결은 안전해요.</b> 사이트에 지갑을 '연결'하는 것은 명함을 보여주는 것과 같아서 코인이 빠져나가지 않습니다. 코인이 움직이는 건 오직 '서명'을 눌렀을 때입니다.</div>
@@ -384,17 +380,15 @@
         <div class="callout tip"><b>만료 주의:</b> 기간이 끝나기 전 갱신하면 계속 소유할 수 있습니다. 만료일을 캘린더에 등록해 두세요.</div>
       </div>
       <div>
-        <div class="video-box" data-video-id="">
+        <div class="video-box" data-video-src="video3.mp4">
           <div class="video-slot"><div class="play">▶</div><b>영상 3 — .dex 도메인 검색과 등록</b><span>영상 준비 중</span></div>
         </div>
         <details class="storyboard">
-          <summary>영상 제작 가이드 (촬영 콘티)</summary>
+          <summary>영상 요약 (이 영상에서 다루는 내용)</summary>
           <ul>
-            <li>지갑 연결 → Polygon 전환 팝업 승인</li>
-            <li>이름 검색 → 기간·결제 토큰 선택 화면</li>
-            <li>1차 서명 → 대기 카운트 → 2차 확정 서명 (두 번 서명함을 강조)</li>
-            <li>내 도메인 목록에서 NFT 확인</li>
-            <li>러닝타임 3분 권장</li>
+            <li>dexignation.com 지갑 연결 → Polygon 네트워크 전환 승인</li>
+            <li>원하는 이름 검색 → 등록 기간·결제 토큰(POL/USDT/USDC) 선택</li>
+            <li>2단계 서명(신청 → 대기 → 확정)으로 등록, 내 도메인이 NFT로 보관되는지 확인</li>
           </ul>
         </details>
       </div>
@@ -439,16 +433,15 @@
         <div class="callout tip"><b>왜 필요한가요?</b> 모든 리워드는 BNB로 정산됩니다. 여기 등록한 주소가 실제 '리워드 수령 지갑'이 됩니다.</div>
       </div>
       <div>
-        <div class="video-box" data-video-id="">
+        <div class="video-box" data-video-src="video4.mp4">
           <div class="video-slot"><div class="play">▶</div><b>영상 4 — 대표 네임 지정과 BNB 지갑 연결</b><span>영상 준비 중</span></div>
         </div>
         <details class="storyboard">
-          <summary>영상 제작 가이드 (촬영 콘티)</summary>
+          <summary>영상 요약 (이 영상에서 다루는 내용)</summary>
           <ul>
-            <li>내 도메인 → 대표 네임 지정 버튼 → 서명 팝업</li>
-            <li>레코드 관리 → BNB(BSC) 주소 추가 → 붙여넣기 강조</li>
-            <li>digmol.com 대시보드에서 연동 확인 장면</li>
-            <li>러닝타임 2~3분 권장</li>
+            <li>보유한 .dex 도메인을 '대표 네임'으로 지정 → MetaMask 서명</li>
+            <li>레코드 관리에서 BNB(BSC) 리워드 수령 주소를 복사·붙여넣기로 등록</li>
+            <li>digmol.com 내 총판 대시보드에서 정상 연동 확인</li>
           </ul>
         </details>
       </div>
@@ -483,17 +476,15 @@
         <div class="callout warn">⚠️ MOL 교환 비율은 상장 전 고정 기준으로 운영됩니다. 정확한 현재 비율은 스왑 화면에 표시된 값을 기준으로 하세요.</div>
       </div>
       <div>
-        <div class="video-box" data-video-id="">
+        <div class="video-box" data-video-src="video5.mp4">
           <div class="video-slot"><div class="play">▶</div><b>영상 5 — MOL 스왑과 Dener 서임</b><span>영상 준비 중</span></div>
         </div>
         <details class="storyboard">
-          <summary>영상 제작 가이드 (촬영 콘티)</summary>
+          <summary>영상 요약 (이 영상에서 다루는 내용)</summary>
           <ul>
-            <li>digmol.com 접속 → BSC 전환 → 지갑 연결</li>
-            <li>총판 .dex 입력 → 할인 적용된 수량 변화 강조</li>
-            <li>BNB 입력 → MOL 계산 → 서명 → 잔액 확인</li>
-            <li>서임 게이지 100% 도달 장면</li>
-            <li>러닝타임 3~4분 권장</li>
+            <li>digmol.com 지갑 연결 → BSC 네트워크 전환</li>
+            <li>할인 도메인 칸에 총판의 .dex 이름 입력 → BNB 입력 → 받을 MOL 수량 확인 후 서명</li>
+            <li>보유 MOL 2,000만 도달 → 서임 게이지 100%, Dener 완료</li>
           </ul>
         </details>
       </div>
@@ -532,16 +523,15 @@
         <div class="callout tip"><b>추천 경로:</b> 레퍼러(약 $620 상당)로 시작해 활동을 익힌 뒤 총판(약 $310 상당 추가)으로 확장하는 경로를 권합니다. 월 5명이 나를 지정하는 경우 확장분에 상응하는 리워드가 약 2개월간 누적되는 구조입니다 (예시이며 보장되지 않습니다).</div>
       </div>
       <div>
-        <div class="video-box" data-video-id="">
+        <div class="video-box" data-video-src="video6.mp4">
           <div class="video-slot"><div class="play">▶</div><b>영상 6 — 총판 대시보드와 할인율 설정</b><span>영상 준비 중</span></div>
         </div>
         <details class="storyboard">
-          <summary>영상 제작 가이드 (촬영 콘티)</summary>
+          <summary>영상 요약 (이 영상에서 다루는 내용)</summary>
           <ul>
-            <li>3,000만 도달 → 총판 등록 요청 메일 안내 자막</li>
-            <li>총판 대시보드 → 할인율 슬라이더 조정 → 적용 서명</li>
-            <li>'나를 지정한 참여자' 목록 화면</li>
-            <li>러닝타임 2~3분 권장</li>
+            <li>보유 MOL을 3,000만까지 추가 스왑 → 관리자에게 총판 등록·활성화 요청</li>
+            <li>총판 대시보드에서 참여자 할인율(0~15%) 설정 → 적용 서명</li>
+            <li>참여자에게 '스왑 화면 할인 칸에 내이름.dex 입력' 안내</li>
           </ul>
         </details>
       </div>
@@ -637,10 +627,13 @@
     if(pill)pill.addEventListener('click',function(){setStep(n,!pill.classList.contains('on'))});
   })(i);}
 
-  // video slots: set data-video-id="YOUTUBE_ID" on .video-box to activate
+  // video slots: data-video-src="file.mp4" (local file) takes priority, else data-video-id="YOUTUBE_ID"
   document.querySelectorAll('.video-box').forEach(function(box){
+    var src=box.getAttribute('data-video-src');
     var id=box.getAttribute('data-video-id');
-    if(id){
+    if(src){
+      box.innerHTML='<div class="video-wrap"><video src="'+src+'" title="가이드 영상" controls preload="metadata" playsinline></video></div>';
+    }else if(id){
       box.innerHTML='<div class="video-wrap"><iframe src="https://www.youtube.com/embed/'+id+'" title="가이드 영상" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
     }
   });
