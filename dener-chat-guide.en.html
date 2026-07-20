@@ -7,6 +7,8 @@
 <meta name="description" content="A conversational onboarding guide for Dener and Evangelist. Answer a few questions and get only the steps that apply to your situation.">
 <link rel="alternate" hreflang="ko" href="dener-chat-guide.html">
 <link rel="alternate" hreflang="en" href="dener-chat-guide.en.html">
+<link rel="alternate" hreflang="ja" href="dener-chat-guide.ja.html">
+<link rel="alternate" hreflang="zh-Hant" href="dener-chat-guide.zh-Hant.html">
 <style>
   :root{
     --dark:#261A0D; --dark2:#3A2A16; --gold:#E8A020; --gold-d:#9C6B06;
@@ -27,7 +29,16 @@
   .hbtn:hover{background:#4a3720}
   .hbtn.doc{background:var(--gold);color:var(--dark);font-weight:800}
   .hbtn.doc:hover{background:#f5b23c}
-  .hbtn.lang{border:1px solid #4a3720}
+  .langmenu{position:relative;flex:none}
+  .langmenu>summary{list-style:none;cursor:pointer;font-size:12px;font-weight:800;padding:7px 12px;border-radius:14px;border:1px solid #4a3720;background:var(--dark2);color:#E8DCC8;white-space:nowrap;display:flex;align-items:center;gap:5px}
+  .langmenu>summary::-webkit-details-marker{display:none}
+  .langmenu>summary::marker{content:""}
+  .langmenu>summary:hover{background:#4a3720;color:#fff}
+  .langmenu[open]>summary{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+  .langlist{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-width:152px;box-shadow:0 10px 28px rgba(38,26,13,.22);z-index:200;display:flex;flex-direction:column;gap:2px}
+  .langlist a{display:block;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .langlist a:hover{background:var(--tint);color:var(--gold-d)}
+  .langlist a.on{background:var(--gold);color:var(--dark)}
   #stepbar{height:4px;background:var(--dark2);flex:none}
   #stepfill{height:100%;width:0;background:var(--gold);transition:width .4s}
 
@@ -76,7 +87,15 @@
   <div class="hactions">
     <button class="hbtn doc" onclick="location.href='dener-onboarding.en.html'">📖 Document guide</button>
     <button class="hbtn" onclick="restart()">↺ Start over</button>
-    <button class="hbtn lang" onclick="location.href='dener-chat-guide.html'">한국어</button>
+    <details class="langmenu">
+      <summary>🌐 English</summary>
+      <div class="langlist">
+      <a href="dener-chat-guide.html">한국어</a>
+      <a href="dener-chat-guide.en.html" class="on" aria-current="true">English</a>
+      <a href="dener-chat-guide.ja.html">日本語</a>
+      <a href="dener-chat-guide.zh-Hant.html">繁體中文</a>
+      </div>
+    </details>
   </div>
 </header>
 <div id="stepbar"><div id="stepfill"></div></div>
@@ -331,6 +350,13 @@ function restart(){
 }
 
 show('start');
+
+/* langmenu-close: close the language dropdown on outside click */
+document.addEventListener('click',function(e){
+  document.querySelectorAll('details.langmenu[open]').forEach(function(d){
+    if(!d.contains(e.target)) d.removeAttribute('open');
+  });
+});
 </script>
 </body>
 </html>

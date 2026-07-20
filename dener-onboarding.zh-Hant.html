@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成為 Dener — 從頭到尾照著做的上手指南</title>
+<meta name="description" content="即使完全沒接觸過加密貨幣也能照著做的 Dener 與佈道者上手指南。交易所 → MetaMask → .dex 網域 → 代表名稱 → MOL 兌換（參與生態系），一步一步帶你走完。">
+<link rel="alternate" hreflang="ko" href="dener-onboarding.html">
+<link rel="alternate" hreflang="en" href="dener-onboarding.en.html">
+<link rel="alternate" hreflang="ja" href="dener-onboarding.ja.html">
+<link rel="alternate" hreflang="zh-Hant" href="dener-onboarding.zh-Hant.html">
+<style>
+  :root{
+    --dark:#261A0D; --dark2:#3A2A16; --gold:#E8A020; --gold-d:#9C6B06;
+    --ink:#2B2418; --mut:#8C8272; --tint:#FBF5EA; --line:#EDE5D6;
+    --bsc:#F0B90B; --bsc-t:#FDF6DC; --poly:#7B3FE4; --poly-t:#F2EBFC;
+    --green:#2E7D32; --red:#C0392B; --red-t:#FBEAE6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Pretendard','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.65}
+  img{max-width:100%}
+  a{color:var(--gold-d)}
+
+  /* ===== top progress ===== */
+  #scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--gold);width:0;z-index:99;transition:width .1s}
+
+  /* ===== nav ===== */
+  nav{position:sticky;top:0;background:rgba(38,26,13,.97);z-index:90;padding:0 16px}
+  .nav-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:8px;height:56px;padding-right:120px;overflow-x:auto}
+  .nav-logo{color:#fff;font-weight:800;font-size:15px;white-space:nowrap;margin-right:8px}
+  .nav-logo span{color:var(--gold)}
+  nav a.step-link{color:#D8CCB8;text-decoration:none;font-size:12.5px;white-space:nowrap;padding:6px 10px;border-radius:14px}
+  nav a.step-link:hover{background:var(--dark2);color:#fff}
+  nav a.step-link.done{color:var(--gold);font-weight:700}
+  nav{position:relative}
+  .langmenu{position:absolute;right:16px;top:11px;z-index:120}
+  .langmenu>summary{list-style:none;cursor:pointer;font-size:12px;font-weight:800;padding:6px 12px;border-radius:14px;border:1px solid var(--dark2);background:var(--dark2);color:#D8CCB8;white-space:nowrap;display:flex;align-items:center;gap:5px}
+  .langmenu>summary::-webkit-details-marker{display:none}
+  .langmenu>summary::marker{content:""}
+  .langmenu>summary:hover{background:#4a3720;color:#fff}
+  .langmenu[open]>summary{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+  .langlist{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-width:152px;box-shadow:0 10px 28px rgba(38,26,13,.22);display:flex;flex-direction:column;gap:2px}
+  .langlist a{display:block;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .langlist a:hover{background:var(--tint);color:var(--gold-d)}
+  .langlist a.on{background:var(--gold);color:var(--dark)}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* ===== hero ===== */
+  header{background:var(--dark);color:#fff;padding:64px 0 56px}
+  .hero-badge{display:inline-block;background:var(--dark2);color:var(--gold);font-size:13px;font-weight:700;padding:6px 14px;border-radius:16px;margin-bottom:18px}
+  h1{font-size:clamp(28px,4.5vw,44px);line-height:1.25;font-weight:800}
+  h1 em{color:var(--gold);font-style:normal}
+  .hero-sub{color:#D8CCB8;font-size:16px;margin:16px 0 28px;max-width:640px}
+  .hero-stats{display:flex;gap:12px;flex-wrap:wrap}
+  .stat{background:var(--dark2);border-radius:12px;padding:14px 20px;min-width:150px}
+  .stat b{display:block;font-size:22px;color:var(--gold)}
+  .stat span{font-size:12px;color:#B8A98F}
+  .hero-cta{margin-top:30px;display:inline-block;background:var(--gold);color:var(--dark);font-weight:800;font-size:16px;padding:14px 30px;border-radius:30px;text-decoration:none}
+  .hero-cta:hover{background:#f5b23c}
+  .hero-alt-cta{display:flex;width:max-content;max-width:100%;align-items:center;gap:6px;background:transparent;border:2px solid var(--gold);color:var(--gold);font-weight:800;font-size:15px;padding:10px 22px;border-radius:30px;text-decoration:none;margin-bottom:20px}
+  .hero-alt-cta:hover{background:var(--gold);color:var(--dark)}
+
+  /* ===== progress checklist ===== */
+  .progress-box{background:var(--tint);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin:-30px auto 0;position:relative;z-index:5;max-width:1040px;box-shadow:0 8px 24px rgba(38,26,13,.10)}
+  .progress-box h3{font-size:14px;color:var(--gold-d);margin-bottom:10px}
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{font-size:12.5px;padding:6px 12px;border-radius:14px;background:#fff;border:1px solid var(--line);color:var(--mut);cursor:pointer;user-select:none}
+  .pill.on{background:var(--gold);border-color:var(--gold);color:var(--dark);font-weight:700}
+
+  /* ===== sections ===== */
+  section.step{padding:64px 0 8px}
+  .step-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:8px}
+  .step-num{flex:none;width:52px;height:52px;border-radius:50%;background:var(--gold);color:#fff;font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center}
+  .step-num.opt{background:var(--dark2)}
+  h2{font-size:clamp(21px,3vw,28px);font-weight:800}
+  .step-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .chip{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:12px;background:var(--tint);color:var(--gold-d)}
+  .chip.bsc{background:var(--bsc-t);color:#8A6A00}
+  .chip.poly{background:var(--poly-t);color:var(--poly)}
+  .goal{font-size:15px;color:var(--mut);margin:10px 0 24px}
+
+  .grid{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:start}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+
+  .actions{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 24px 20px;box-shadow:0 4px 16px rgba(38,26,13,.06)}
+  .actions h4{font-size:14px;color:var(--gold-d);margin:18px 0 4px}
+  ol.todo{list-style:none;counter-reset:t}
+  ol.todo>li{counter-increment:t;position:relative;padding:12px 0 12px 44px;border-bottom:1px dashed var(--line);font-size:14.5px}
+  ol.todo>li:last-child{border-bottom:none}
+  ol.todo>li::before{content:counter(t);position:absolute;left:0;top:12px;width:28px;height:28px;border-radius:50%;background:var(--tint);color:var(--gold-d);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .todo b{color:var(--ink)}
+  .todo .kbd{background:var(--tint);border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:13px;font-weight:700;color:var(--gold-d);white-space:nowrap}
+  .todo .addr{font-family:Consolas,monospace;font-size:12.5px;background:#F7F3EA;padding:1px 6px;border-radius:6px}
+  .sub{font-size:13px;color:var(--mut);margin-top:3px}
+
+  /* ===== video slot ===== */
+  .video-slot{border:2px dashed var(--gold);border-radius:14px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--tint);text-align:center;padding:16px}
+  .video-slot .play{width:54px;height:54px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+  .video-slot b{font-size:14px}
+  .video-slot span{font-size:12px;color:var(--mut)}
+  .video-wrap iframe,.video-wrap video{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000;display:block}
+  .audio-note{font-size:11.5px;color:var(--mut);margin-top:8px;background:var(--tint);border-radius:8px;padding:7px 11px}
+
+  details.storyboard{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:0 16px}
+  details.storyboard summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--poly);padding:12px 0;list-style:none}
+  details.storyboard summary::before{content:"🎬 ";}
+  details.storyboard ul{margin:0 0 14px 18px;font-size:13px;color:#5A5142}
+  details.storyboard li{margin-bottom:5px}
+
+  .callout{border-radius:12px;padding:14px 18px;font-size:13.5px;margin-top:16px}
+  .callout.warn{background:var(--red-t);color:var(--red);font-weight:600}
+  .callout.tip{background:var(--tint);color:#5A5142}
+  .callout.tip b{color:var(--gold-d)}
+
+  .done-row{margin:26px 0 0;display:flex;align-items:center;gap:10px;background:var(--tint);border-radius:12px;padding:14px 18px}
+  .done-row input{width:20px;height:20px;accent-color:var(--gold)}
+  .done-row label{font-size:14px;font-weight:700;cursor:pointer}
+
+  .divider{border:none;border-top:1px solid var(--line);margin:56px auto 0;max-width:1040px}
+
+  /* ===== fork cards / faq / glossary ===== */
+  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px}
+  @media(max-width:720px){.cards2{grid-template-columns:1fr}}
+  .card{border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 4px 16px rgba(38,26,13,.06)}
+  .card.hl{background:var(--tint)}
+  .card h3{font-size:17px;margin-bottom:8px}
+  .card .big{font-size:30px;font-weight:800;color:var(--gold-d)}
+  .card p{font-size:13.5px;color:#5A5142}
+
+  details.qa{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;padding:0 18px;background:#fff}
+  details.qa summary{cursor:pointer;font-weight:700;font-size:14.5px;padding:14px 0;list-style:none}
+  details.qa summary::before{content:"Q. ";color:var(--gold)}
+  details.qa p{font-size:13.5px;color:#5A5142;padding-bottom:14px}
+  table.gloss{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:14px}
+  table.gloss th{background:var(--dark);color:#fff;text-align:left;padding:9px 12px;font-size:13px}
+  table.gloss th:first-child{color:var(--gold)}
+  table.gloss td{border-bottom:1px solid var(--line);padding:9px 12px;vertical-align:top}
+  table.gloss td:first-child{font-weight:700;color:var(--gold-d);white-space:nowrap}
+
+  /* ===== curated resources ===== */
+  .res{margin-top:26px;background:var(--tint);border:1px solid var(--line);border-radius:14px;padding:4px 22px 6px}
+  .res summary{cursor:pointer;font-size:14.5px;font-weight:800;color:var(--gold-d);padding:14px 0;list-style:none}
+  .res summary::before{content:"📚 "}
+  .res h5{font-size:12.5px;color:var(--ink);margin:6px 0 8px}
+  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 16px}
+  @media(max-width:820px){.res-grid{grid-template-columns:1fr}}
+  .res-item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12.5px}
+  .res-item .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:9px;margin-right:6px;vertical-align:1px}
+  .tag.blog{background:var(--poly-t);color:var(--poly)}
+  .tag.yt{background:#FDE8E6;color:#C0392B}
+  .tag.off{background:var(--bsc-t);color:#8A6A00}
+  .tag.ko{background:#E6F0FB;color:#1B5E9E}
+  .res-item a{font-weight:700;font-size:13px;text-decoration:none}
+  .res-item a:hover{text-decoration:underline}
+  .res-item .src{color:var(--mut);font-size:11.5px;margin:3px 0 6px}
+  .res-item ul{margin:0 0 0 16px;color:#5A5142}
+  .res-item li{margin-bottom:2px}
+  .res-note{font-size:11.5px;color:var(--mut);margin:0 0 14px}
+
+  footer{background:var(--dark);color:#9A8B76;font-size:12.5px;padding:36px 0;margin-top:72px}
+  footer .wrap{display:flex;flex-direction:column;gap:6px}
+  footer a{color:#D8CCB8}
+</style>
+</head>
+<body>
+<div id="scrollbar"></div>
+
+<nav>
+  <div class="nav-in">
+    <div class="nav-logo">DENER <span>指南</span></div>
+    <a class="step-link" href="#step1" data-step="1">1 交易所</a>
+    <a class="step-link" href="#step2" data-step="2">2 MetaMask</a>
+    <a class="step-link" href="#step3" data-step="3">3 .dex 名稱</a>
+    <a class="step-link" href="#step4" data-step="4">4 代表名稱</a>
+    <a class="step-link" href="#step5" data-step="5">5 MOL 兌換</a>
+    <a class="step-link" href="#step6" data-step="6">6 佈道者</a>
+    <a class="step-link" href="#faq">常見問題</a>
+    <a class="step-link" href="#gloss">名詞解釋</a>
+  </div>
+  <details class="langmenu">
+    <summary>🌐 繁體中文</summary>
+    <div class="langlist">
+    <a href="dener-onboarding.html">한국어</a>
+    <a href="dener-onboarding.en.html">English</a>
+    <a href="dener-onboarding.ja.html">日本語</a>
+    <a href="dener-onboarding.zh-Hant.html" class="on" aria-current="true">繁體中文</a>
+    </div>
+  </details>
+</nav>
+
+<header>
+  <div class="wrap">
+    <a class="hero-alt-cta" href="dener-chat-guide.zh-Hant.html">💬 從對話式指南開始 →</a>
+    <div class="hero-badge">⛏ 成為艾爾多拉西亞守護者之路</div>
+    <h1>第一次接觸加密貨幣？沒問題。<br><em>成為 Dener</em> — 照著這份指南走到最後就好。</h1>
+    <p class="hero-sub">從開設交易所帳號，到 MOL 兌換與 Dener 敘任（參與生態系）—— 六個步驟，畫面上看到什麼就照著做什麼。每個步驟都附有影片。</p>
+    <div class="hero-stats">
+      <div class="stat"><b>6 個步驟</b><span>準備 → 敘任 → 活動</span></div>
+      <div class="stat"><b>約 $650 起</b><span>參與準備規模（推薦人層級）</span></div>
+      <div class="stat"><b>2～3 天</b><span>含交易所身分驗證的預估時間</span></div>
+    </div>
+    <a class="hero-cta" href="#step1">從 STEP 1 開始 ↓</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="progress-box">
+    <h3>你的進度 —— 點一下步驟就能標記完成（會存在這台瀏覽器裡）</h3>
+    <div class="pills">
+      <span class="pill" data-step="1">STEP 1 在交易所取得 BNB</span>
+      <span class="pill" data-step="2">STEP 2 MetaMask 錢包</span>
+      <span class="pill" data-step="3">STEP 3 註冊 .dex 名稱</span>
+      <span class="pill" data-step="4">STEP 4 代表名稱與收款錢包</span>
+      <span class="pill" data-step="5">STEP 5 MOL 兌換與 Dener 敘任</span>
+      <span class="pill" data-step="6">STEP 6 佈道者登錄（選擇性）</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= STEP 1 ================= -->
+<section class="step" id="step1">
+  <div class="wrap">
+    <div class="step-head">
+      <div class="step-num">1</div>
+      <div>
+        <h2>取得兌換時要用的 BNB</h2>
+        <div class="step-meta"><span class="chip">預估 30～60 分鐘 + 驗證等待</span><span class="chip bsc">需要準備：身分證件 · 銀行帳戶</span></div>
+      </div>
+    </div>
+    <p class="goal">目標：取得 BNB（用於 MOL 兌換）以及少量 POL（支付手續費）。參與準備規模 —— 推薦人層級：約 $650～800 等值 / 推薦人 + 佈道者：約 $960～1,100 等值。（僅為示例，不構成任何保證）</p>
+    <div class="grid">
+      <div class="actions">
+        <h4>路線 A —— 直接上架 BNB 的交易所（Binance、Bithumb 等）</h4>
+        <ol class="todo">
+          <li><b>開設帳號並完成身分驗證（KYC）</b><div class="sub">需要證件照片與綁定的銀行帳戶。驗證可能要花上一兩天。</div></li>
+          <li>入金之後，把資金兌換成 <span class="kbd">BNB</span><div class="sub">請準備你要承諾持有的 MOL（PV）所需規模，再多抓 5～10% 支應手續費。</div></li>
+          <li>另外準備約 $10～20 等值的 <span class="kbd">POL</span><div class="sub">用於 .dex 網域註冊，以及 Polygon 網路的手續費（Gas 費）。</div></li>
+        </ol>
+        <h4>路線 B —— 沒有 BNB 的交易所（Upbit 等）</h4>
+        <ol class="todo">
+          <li>先兌換成轉帳快速的幣種（XRP、TRX 等），再 <b>轉到 Binance</b></li>
+          <li>在 Binance 兌換成 <span class="kbd">BNB</span><div class="sub">POL 也可以在你當地的交易所取得，再透過 Polygon 網路提幣。</div></li>
+        </ol>
+        <div class="callout warn">⚠️ 在部分司法管轄區（例如韓國），要把資金從交易所轉到 MetaMask 這類個人錢包時，依旅行規則（Travel Rule）規定必須 <b>事先登錄收款錢包地址</b>。請提早確認交易所的「個人錢包登錄」選單。</div>
+        <div class="callout tip"><b>提幣請留到 STEP 2，現在先不要。</b> 先建立錢包、拿到地址，再提幣。順序不要顛倒。</div>
+      </div>
+      <div>
+        <div class="video-box" data-video-src="video1.mp4">
+          <div class="video-slot"><div class="play">▶</div><b>影片 1 —— 在交易所取得 BNB 與 POL</b><span>影片準備中</span></div>
+        </div>
+        <div class="audio-note">🔊 影片旁白為韓語。下方的文字摘要以中文說明相同內容。</div>
+        <details class="storyboard" open>
+          <summary>影片摘要（這支影片講些什麼）</summary>
+          <ul>
+            <li>註冊帳號、通過 KYC 驗證，並為交易所帳戶入金</li>
+            <li>以市價兌換 BNB，同時準備少量 POL</li>
+            <li>提幣到 MetaMask 時所需的「個人錢包登錄」（旅行規則）選單在哪裡</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+    <details class="res">
+      <summary>參考資料 —— 開戶、身分驗證、提幣</summary>
+      <p class="res-note">以 2026 年 7 月的資訊挑選。外部頁面可能隨時變動；若畫面與這裡描述不同，請以各交易所官方客服中心為準。</p>
+
+      <h5>🟡 官方指南（英文）</h5>
+      <div class="res-grid">
+        <div class="res-item"><span class="tag off">官方</span><a href="https://support.metamask.io/manage-crypto/move-crypto/transfer/understanding-bsc-binance-and-metamask/" target="_blank" rel="noopener">Understanding BSC, Binance and MetaMask</a><div class="src">MetaMask 說明中心</div><ul><li>如何選擇 BSC（BEP-20）網路</li><li>選錯網路轉出時該怎麼辦</li></ul></div>
+        <div class="res-item"><span class="tag off">官方</span><a href="https://support.ledger.com/article/4402646489873-zd" target="_blank" rel="noopener">Which network should I choose when withdrawing?</a><div class="src">Ledger 說明中心</div><ul><li>用圖解說明「網路」的概念 —— 避免轉錯而遺失資產</li></ul></div>
+      </div>
+
+      <h5>🇰🇷 僅適用韓國 —— 韓國本地交易所與旅行規則（頁面為韓文）</h5>
+      <div class="res-grid">
+        <div class="res-item"><span class="tag ko">한국어</span><a href="https://support.upbit.com/hc/ko/articles/6713306957977" target="_blank" rel="noopener">個人錢包地址登錄方法</a><div class="src">Upbit 客服中心 · 韓文</div><ul><li>MetaMask 的登錄流程（電腦版與手機版）</li><li>只有已登錄的錢包才能自由提幣</li></ul></div>
+        <div class="res-item"><span class="tag ko">한국어</span><a href="https://support.upbit.com/hc/ko/articles/4498679629337" target="_blank" rel="noopener">認識旅行規則（Travel Rule）</a><div class="src">Upbit 客服中心 · 韓文</div><ul><li>約 100 萬韓元以上須進行查核</li><li>支援的錢包清單</li></ul></div>
+        <div class="res-item"><span class="tag ko">한국어</span><a href="https://support.bithumb.com/hc/ko/articles/51036139415321" target="_blank" rel="noopener">如何綁定銀行帳戶？（Bithumb）</a><div class="src">Bithumb 客服中心 · 韓文</div><ul><li>入出金 → 韓元 → 綁定帳戶 → 1 韓元驗證</li></ul></div>
+        <div class="res-item"><span class="tag ko">한국어</span><a href="https://www.tokenpost.kr/article-85909" target="_blank" rel="noopener">各交易所的旅行規則政策比較</a><div class="src">TokenPost · 韓文</div><ul><li>比較韓國各交易所的個人錢包政策</li></ul></div>
+      </div>
+      <p class="res-note">完整的韓文操作教學（Binance 註冊部落格、YouTube 教學影片、Upbit／Bithumb／K-Bank 開戶指南）收錄在<a href="dener-onboarding.html#step1">本頁的韓文版</a>。</p>
+    </details>
+    <div class="done-row"><input type="checkbox" id="c1" data-step="1"><label for="c1">STEP 1 完成 —— 我已經有 BNB 和 POL 了</label></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ================= STEP 2 ================= -->
+<section class="step" id="step2">
+  <div class="wrap">
+    <div class="step-head">
+      <div class="step-num">2</div>
+      <div>
+        <h2>建立 MetaMask 錢包，並把幣轉進來</h2>
+        <div class="step-meta"><span class="chip">預估 20～30 分鐘</span><span class="chip bsc">BNB Chain</span><span class="chip poly">Polygon</span></div>
+      </div>
+    </div>
+    <p class="goal">目標：建立屬於自己的錢包（MetaMask），加入需要的兩條網路（BSC 與 Polygon），然後把幣從交易所轉過來。</p>
+    <div class="grid">
+      <div class="actions">
+        <h4>安裝錢包</h4>
+        <ol class="todo">
+          <li><b>電腦版：</b>Chrome 選單 ⋮ → <span class="kbd">擴充功能</span> → 在 Chrome 線上應用程式商店搜尋 <span class="kbd">MetaMask</span> → 確認是狐狸圖示 → <span class="kbd">加到 Chrome</span><div class="sub">手機版：從應用程式商店安裝 MetaMask 官方 App（記得確認發行商！）</div></li>
+          <li><span class="kbd">建立新錢包</span> → 設定密碼</li>
+          <li><b>把 12 個單字的助記詞抄在紙上，妥善保管</b><div class="sub">那 12 個單字就是你所有資產的鑰匙。絕對不要拍照、不要用通訊軟體傳送、不要告訴任何人。弄丟了就無法復原。</div></li>
+        </ol>
+        <h4>加入網路（把兩條路都打通）</h4>
+        <ol class="todo">
+          <li>點 MetaMask 上方的網路選單 → <span class="kbd">新增網路</span> → 從清單中加入 <b>BNB Smart Chain</b> 與 <b>Polygon</b><div class="sub">如果清單裡沒有，前往 chainlist.org → 搜尋 → Connect Wallet → Add，就會自動加入。</div></li>
+        </ol>
+        <h4>從交易所提幣</h4>
+        <ol class="todo">
+          <li>點 MetaMask 上方的帳戶名稱 → <b>複製你的地址</b> <span class="addr">0x…</span></li>
+          <li>在交易所的提幣畫面提出 BNB —— 網路必須選 <span class="kbd">BSC (BEP-20)</span></li>
+          <li>提出 POL —— 網路選 <span class="kbd">Polygon</span></li>
+          <li><b>先轉一小筆測試</b> → 確認有收到 → 再把其餘的轉過來</li>
+        </ol>
+        <div class="callout warn">⚠️ 網路選錯可能導致資產永久遺失。按下確認前，請把「網路」欄位再檢查一次。</div>
+      </div>
+      <div>
+        <div class="video-box" data-video-src="video2.mp4">
+          <div class="video-slot"><div class="play">▶</div><b>影片 2 —— 從安裝 MetaMask 到收到幣</b><span>影片準備中</span></div>
+        </div>
+        <div class="audio-note">🔊 影片旁白為韓語。下方的文字摘要以中文說明相同內容。</div>
+        <details class="storyboard" open>
+          <summary>影片摘要（這支影片講些什麼）</summary>
+          <ul>
+            <li>從 Chrome 線上應用程式商店安裝 MetaMask → 建立新錢包，把 12 個單字的助記詞抄在紙上</li>
+            <li>加入 BNB Smart Chain 與 Polygon 網路（使用 chainlist.org）</li>
+            <li>複製自己的地址 → 提幣時確認網路（BEP-20／Polygon）→ 先小額測試，再轉全額</li>
+          </ul>
+        </details>
+        <div class="callout tip"><b>「連接」是安全的。</b> 把錢包「連接」到網站，就像遞出一張名片 —— 不會有任何幣被移動。只有在你按下「簽署」時，幣才會動。</div>
+      </div>
+    </div>
+    <details class="res">
+      <summary>參考資料 —— MetaMask 安裝、安全性、新增網路</summary>
+      <p class="res-note">以 2026 年 7 月的資訊挑選。任何跟你要助記詞的網站或人，毫無例外都是詐騙 —— 這條原則凌駕於你在任何地方讀到的其他說法。</p>
+
+      <h5>🦊 安裝與建立錢包</h5>
+      <div class="res-grid">
+        <div class="res-item"><span class="tag off">官方</span><a href="https://support.metamask.io/start/getting-started-with-metamask/" target="_blank" rel="noopener">Getting started with MetaMask</a><div class="src">MetaMask 說明中心</div><ul><li>官方下載途徑（避開假的擴充功能）</li><li>各瀏覽器與手機的安裝方式</li></ul></div>
+        <div class="res-item"><span class="tag off">官方</span><a href="https://support.metamask.io/privacy-and-security/basic-safety-and-security-tips-for-metamask/" target="_blank" rel="noopener">Basic safety and security tips for MetaMask</a><div class="src">MetaMask 說明中心</div><ul><li>助記詞的保管原則</li><li>常見的釣魚手法辨識</li></ul></div>
+      </div>
+
+      <h5>⛓ 新增網路（BSC · Polygon）</h5>
+      <div class="res-grid">
+        <div class="res-item"><span class="tag off">官方</span><a href="https://support.metamask.io/networks-and-sidechains/managing-networks/add-a-network-using-chainlist/" target="_blank" rel="noopener">Add a network using Chainlist</a><div class="src">MetaMask 說明中心</div><ul><li>chainlist.org → 搜尋 → Add to MetaMask</li></ul></div>
+        <div class="res-item"><span class="tag off">官方</span><a href="https://chainlist.org" target="_blank" rel="noopener">chainlist.org</a><div class="src">Chainlist</div><ul><li>搜尋「BNB Smart Chain」或「Polygon」→ Connect Wallet → Add</li></ul></div>
+      </div>
+      <p class="res-note">更多韓文操作教學與資安案例整理，收錄在<a href="dener-onboarding.html#step2">本頁的韓文版</a>。</p>
+    </details>
+    <div class="done-row"><input type="checkbox" id="c2" data-step="2"><label for="c2">STEP 2 完成 —— BNB 和 POL 已經進到我的錢包了</label></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ================= STEP 3 ================= -->
+<section class="step" id="step3">
+  <div class="wrap">
+    <div class="step-head">
+      <div class="step-num">3</div>
+      <div>
+        <h2>在 DEXignation 註冊 .dex 網域</h2>
+        <div class="step-meta"><span class="chip">預估 10～15 分鐘</span><span class="chip poly">Polygon 鏈</span></div>
+      </div>
+    </div>
+    <p class="goal">目標：以 NFT 的形式擁有一個好唸好記的網路名稱（例如 myname.dex），用來取代又長又難記的錢包地址。它也是你推薦連結與佈道者活動的基礎。</p>
+    <div class="grid">
+      <div class="actions">
+        <ol class="todo">
+          <li>前往 <a href="https://dexignation.com" target="_blank" rel="noopener">dexignation.com</a> → 點右上角的 <span class="kbd">連接錢包</span><div class="sub">手機請從 MetaMask App 裡的「瀏覽器」分頁開啟這個網站。</div></li>
+          <li>看到提示時，同意 <b>切換到 Polygon</b></li>
+          <li>在搜尋框輸入你想要的名稱 → 確認是否還沒被註冊<div class="sub">這個名稱會出現在你的推薦連結裡，所以請取得簡短好記（例如 roy.dex）。</div></li>
+          <li>選擇註冊期間 <span class="kbd">1 · 3 · 5 · 10 · 15 年</span> → 選擇付款代幣 <span class="kbd">POL / USDT / USDC</span></li>
+          <li><b>註冊需要簽署兩次：</b>① 申請簽署 → ② 稍等片刻（防止搶先交易的機制）→ ③ 確認簽署<div class="sub">中途請不要關閉視窗，跟著指示完成第二次簽署。</div></li>
+          <li>完成後，確認名稱有出現在你的帳戶底下 —— 它會以 <b>NFT</b> 的形式保存在你的錢包裡</li>
+        </ol>
+        <div class="callout tip"><b>注意到期日：</b>在期限結束前續約，名稱就會繼續屬於你。建議把到期日記到行事曆裡。</div>
+      </div>
+      <div>
+        <div class="video-box" data-video-src="video3.mp4">
+          <div class="video-slot"><div class="play">▶</div><b>影片 3 —— 搜尋並註冊 .dex 網域</b><span>影片準備中</span></div>
+        </div>
+        <div class="audio-note">🔊 影片旁白為韓語。下方的文字摘要以中文說明相同內容。</div>
+        <details class="storyboard" open>
+          <summary>影片摘要（這支影片講些什麼）</summary>
+          <ul>
+            <li>在 dexignation.com 連接錢包 → 同意切換到 Polygon 網路</li>
+            <li>搜尋想要的名稱 → 選擇註冊期間與付款代幣（POL／USDT／USDC）</li>
+            <li>完成兩階段簽署（申請 → 等待 → 確認），並確認名稱已以 NFT 形式保存</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+    <details class="res">
+      <summary>參考資料 —— DEXignation 官方文件與程式庫</summary>
+      <div class="res-grid">
+        <div class="res-item"><span class="tag off">官方</span><a href="https://docs.dexignation.com" target="_blank" rel="noopener">DEXignation 官方文件</a><div class="src">docs.dexignation.com</div><ul><li>指南：註冊名稱（register-a-name）· 名稱解析</li><li>概念：namehash · commit-reveal（為什麼註冊要分兩步）· 多鏈地址</li></ul></div>
+        <div class="res-item"><span class="tag off">官方</span><a href="https://github.com/DEXignation" target="_blank" rel="noopener">DEXignation GitHub（完整原始碼公開）</a><div class="src">github.com/DEXignation</div><ul><li>dexignation-contracts（Polygon 智慧合約）</li><li>dexignation-docs · api · MetaMask snap</li><li>Beosin 稽核報告 No. 202607031722</li></ul></div>
+      </div>
+    </details>
+    <div class="done-row"><input type="checkbox" id="c3" data-step="3"><label for="c3">STEP 3 完成 —— 我有自己的 .dex 名稱了</label></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ================= STEP 4 ================= -->
+<section class="step" id="step4">
+  <div class="wrap">
+    <div class="step-head">
+      <div class="step-num">4</div>
+      <div>
+        <h2>設定代表名稱，並綁定接收獎勵的 BNB 錢包</h2>
+        <div class="step-meta"><span class="chip">預估 10 分鐘</span><span class="chip poly">Polygon 鏈</span></div>
+      </div>
+    </div>
+    <p class="goal">目標：把剛剛註冊好的名稱，指定為錢包的正式名牌（代表名稱），並在名稱後面登錄用來結算獎勵的 BNB 地址。</p>
+    <div class="grid">
+      <div class="actions">
+        <h4>設定代表名稱</h4>
+        <ol class="todo">
+          <li>在 DEXignation 開啟你的帳戶 → 從持有網域中選出剛註冊的名稱</li>
+          <li><span class="kbd">設為代表名稱</span> → 在 MetaMask 簽署<div class="sub">設定之後，你的錢包地址就會顯示成這個名稱，推薦連結（ref=你的名稱.dex）也會用它。</div></li>
+        </ol>
+        <h4>登錄接收 BNB 的錢包</h4>
+        <ol class="todo">
+          <li>在你的網域上開啟 <span class="kbd">記錄管理</span></li>
+          <li>新增一筆地址記錄 → 從鏈的清單中選擇 <b>BNB (BSC)</b></li>
+          <li>用<b>複製貼上</b>的方式填入要接收獎勵的 BNB 地址 → 簽署<div class="sub">只要錯一個字元，獎勵就永遠到不了你手上。千萬不要用手打。</div></li>
+          <li>到 digmol.com → <span class="kbd">我的佈道者儀表板</span> 確認顯示正確</li>
+        </ol>
+        <div class="callout tip"><b>為什麼需要這一步？</b> 所有獎勵都以 BNB 結算。你在這裡登錄的地址，就是實際收到獎勵的錢包。</div>
+      </div>
+      <div>
+        <div class="video-box" data-video-src="video4.mp4">
+          <div class="video-slot"><div class="play">▶</div><b>影片 4 —— 設定代表名稱與綁定 BNB 錢包</b><span>影片準備中</span></div>
+        </div>
+        <div class="audio-note">🔊 影片旁白為韓語。下方的文字摘要以中文說明相同內容。</div>
+        <details class="storyboard" open>
+          <summary>影片摘要（這支影片講些什麼）</summary>
+          <ul>
+            <li>把 .dex 網域指定為「代表名稱」→ 在 MetaMask 簽署</li>
+            <li>在記錄管理中，以複製貼上方式登錄 BNB（BSC）的獎勵接收地址</li>
+            <li>在 digmol.com 的佈道者儀表板確認已正確連結</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+    <div class="done-row"><input type="checkbox" id="c4" data-step="4"><label for="c4">STEP 4 完成 —— 代表名稱與收款錢包都連結好了</label></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ================= STEP 5 ================= -->
+<section class="step" id="step5">
+  <div class="wrap">
+    <div class="step-head">
+      <div class="step-num">5</div>
+      <div>
+        <h2>把 BNB 兌換(swap)成 MOL，參與生態系（Dener 敘任）</h2>
+        <div class="step-meta"><span class="chip">預估 10 分鐘</span><span class="chip bsc">BNB Chain</span><span class="chip">20,000,000 MOL ≈ $620 等值</span></div>
+      </div>
+    </div>
+    <p class="goal">目標：在 digmol.com 把 BNB 兌換成 MOL 以參與生態系，並讓持有量達到 20,000,000 MOL 以取得 Dener 敘任。敘任會記錄在鏈上，任何人都能驗證。</p>
+    <div class="grid">
+      <div class="actions">
+        <ol class="todo">
+          <li><b>先問清楚介紹你進來的那位佈道者的 .dex 名稱</b><div class="sub">這是你取得折扣（最高 15%）的關鍵。如果不知道，請在兌換前先問。</div></li>
+          <li>前往 <a href="https://digmol.com" target="_blank" rel="noopener">digmol.com</a> → <span class="kbd">連接錢包</span> → <b>把網路切換到 BSC</b></li>
+          <li>在兌換（敘任）畫面的 <span class="kbd">折扣網域 (.dex)</span> 欄位，<b>輸入佈道者的 .dex 名稱</b></li>
+          <li>輸入要投入的 BNB 數量 → 確認自動換算出來的 MOL 數量<div class="sub">兌換比率寫在合約裡，沒有議價空間，也不會因人而異。</div></li>
+          <li>在 MetaMask <span class="kbd">簽署</span> → MOL 會立刻進到你的錢包</li>
+          <li>當你持有的 MOL 達到 <b>20,000,000</b>，敘任進度條就會到 100% —— <b>你就是 Dener 了</b></li>
+        </ol>
+        <div class="callout tip"><b>之後的日常大概是這樣：</b>分享你的推薦連結（app.digmol.com/ref?ref=<b>你的名稱.dex</b>）→ 獎勵每天晚上 10 點結算，11 點起可領取 → 沒領的獎勵不會消失，會持續累積在鏈上。</div>
+        <div class="callout warn">⚠️ MOL 的兌換比率是以上市前的固定基準匯率運作。確切的當前比率，請一律以兌換畫面上顯示的數值為準。</div>
+      </div>
+      <div>
+        <div class="video-box" data-video-src="video5.mp4">
+          <div class="video-slot"><div class="play">▶</div><b>影片 5 —— MOL 兌換與 Dener 敘任</b><span>影片準備中</span></div>
+        </div>
+        <div class="audio-note">🔊 影片旁白為韓語。下方的文字摘要以中文說明相同內容。</div>
+        <details class="storyboard" open>
+          <summary>影片摘要（這支影片講些什麼）</summary>
+          <ul>
+            <li>在 digmol.com 連接錢包 → 切換到 BSC 網路</li>
+            <li>在折扣欄位輸入佈道者的 .dex 名稱 → 輸入 BNB → 確認 MOL 數量後簽署</li>
+            <li>達到 20,000,000 MOL → 敘任進度條 100%，Dener 完成</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+    <details class="res">
+      <summary>參考資料 —— MolePin 與 DigMol 官方管道</summary>
+      <div class="res-grid">
+        <div class="res-item"><span class="tag off">官方</span><a href="https://digmol.com" target="_blank" rel="noopener">digmol.com —— Dener 敘任官方頁面</a><div class="src">DigMol</div><ul><li>敘任的四個階段 · 即時合約比率與剩餘數量</li><li>佈道者儀表板 · 語言：韓文 / 英文 / 日文 / 中文</li></ul></div>
+        <div class="res-item"><span class="tag off">官方</span><a href="https://github.com/molepin" target="_blank" rel="noopener">MolePin GitHub（代幣與跨鏈公開紀錄）</a><div class="src">github.com/molepin</div><ul><li>molepin-contracts · devlog · 跨鏈驗證紀錄</li><li>BEOSIN 稽核（No. 202606191626）</li></ul></div>
+      </div>
+    </details>
+    <div class="done-row"><input type="checkbox" id="c5" data-step="5"><label for="c5">STEP 5 完成 —— 我拿到 Dener 敘任了 🎉</label></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ================= STEP 6 ================= -->
+<section class="step" id="step6">
+  <div class="wrap">
+    <div class="step-head">
+      <div class="step-num opt">6</div>
+      <div>
+        <h2>成為佈道者 —— 選擇性步驟</h2>
+        <div class="step-meta"><span class="chip">30,000,000 MOL ≈ $930 等值</span><span class="chip">需要管理員登錄</span></div>
+      </div>
+    </div>
+    <p class="goal">目標：成為佈道者。每當有參與者指定你，你就能獲得該筆參與金額的 5% 作為獎勵。這與推薦人獎勵是分開的，同一筆參與可以同時適用兩者（若你身兼兩種角色，第一層參與最高可達 25%）。</p>
+    <div class="grid">
+      <div class="actions">
+        <ol class="todo">
+          <li>繼續兌換 MOL，直到持有 <b>30,000,000</b>（方法與 STEP 5 相同，約再多 $310 等值）</li>
+          <li><b>請管理員為你登錄並啟用佈道者身分</b> —— <a href="mailto:punditcode@gmail.com">punditcode@gmail.com</a><div class="sub">光是承諾持有的 MOL（PV）達標，還不能被指定。必須在管理員頁面完成啟用。</div></li>
+          <li>在 digmol.com 開啟 <span class="kbd">我的佈道者儀表板</span>，設定給參與者的折扣率 <span class="kbd">0～15%</span>（你自己的 5% 是自動的）</li>
+          <li>告訴參與者：<b>「在兌換畫面的折扣欄位填我的名稱（你的名稱.dex），就能拿到折扣。」</b><div class="sub">這一句話就是佈道者活動的全部。指定是選擇性的，所以不主動說，就不會產生獎勵。</div></li>
+        </ol>
+        <div class="callout tip"><b>建議的路徑：</b>先從推薦人開始（約 $620 等值），熟悉活動怎麼運作之後，再擴展成佈道者（約再多 $310 等值）。假設每個月有 5 個人指定你，對應這筆擴展規模的獎勵大約會在兩個月內累積起來（僅為示例，不構成任何保證）。</div>
+      </div>
+      <div>
+        <div class="video-box" data-video-src="video6.mp4">
+          <div class="video-slot"><div class="play">▶</div><b>影片 6 —— 佈道者儀表板與折扣設定</b><span>影片準備中</span></div>
+        </div>
+        <div class="audio-note">🔊 影片旁白為韓語。下方的文字摘要以中文說明相同內容。</div>
+        <details class="storyboard" open>
+          <summary>影片摘要（這支影片講些什麼）</summary>
+          <ul>
+            <li>繼續兌換 MOL 直到 30,000,000 → 向管理員申請佈道者登錄與啟用</li>
+            <li>在佈道者儀表板設定參與者折扣率（0～15%）→ 簽署以套用</li>
+            <li>告訴參與者在兌換畫面的折扣欄位輸入「你的名稱.dex」</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+    <div class="cards2">
+      <div class="card"><h3>推薦人（20,000,000）</h3><div class="big">$620</div><p>沿著註冊路徑自動形成的分層獎勵 —— 第一層：10% + 較小那一邊 10%；第二層：5% + 5%。作為參考，當第一層參與規模約達 $6,200（大約 10 人）時，會累積到與你參與規模相當的獎勵。（僅為示例，不構成任何保證）</p></div>
+      <div class="card hl"><h3>推薦人 + 佈道者（30,000,000）</h3><div class="big">$930</div><p>額外加上每筆被指定參與金額的 5% —— 如果你介紹的人同時也指定你，那一筆參與最高可適用 25%。假設每週介紹一人，累積金額大約在第六週達到你的參與規模。（僅為示例，不構成任何保證）</p></div>
+    </div>
+    <div class="done-row"><input type="checkbox" id="c6" data-step="6"><label for="c6">STEP 6 完成 —— 佈道者登錄完成</label></div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ================= FAQ ================= -->
+<section class="step" id="faq">
+  <div class="wrap">
+    <div class="step-head"><div class="step-num" style="background:var(--dark2)">?</div><div><h2>常見問題</h2></div></div>
+    <div style="margin-top:20px">
+      <details class="qa"><summary>獎勵是用什麼發放的？</summary><p>全部都是 BNB。只有觀看廣告所得的挖礦獎勵是以 MOL 發放。這也是 STEP 4 要登錄 BNB 收款錢包的原因。</p></details>
+      <details class="qa"><summary>沒有領取的獎勵會不會消失？</summary><p>不會。它們會持續累積在鏈上，你隨時都可以領取。每天晚上 10 點結算，11 點起開放領取。</p></details>
+      <details class="qa"><summary>把錢包連接到網站，會不會有風險？</summary><p>「連接」就像出示一張名片 —— 不會有任何幣被移動。只有在你按下「簽署」時幣才會動，所以你唯一需要養成的習慣，就是在確認之前先讀清楚自己正在簽署什麼（金額、網站地址）。</p></details>
+      <details class="qa"><summary>如果我不知道佈道者的 .dex 名稱怎麼辦？</summary><p>請在兌換之前，先問介紹你進來的那個人。輸入之後你能拿到折扣（最高 15%），對方也能拿到應得的獎勵。沒有輸入就沒有折扣。</p></details>
+      <details class="qa"><summary>我可以指定自己當自己的佈道者嗎？</summary><p>不行，系統不允許自我指定。獎勵只有在其他參與者指定你的時候才會產生。</p></details>
+      <details class="qa"><summary>這個專案值得信任嗎？</summary><p>智慧合約已完成兩次外部稽核（Beosin），程式碼在 GitHub 上完整公開，原始碼也在 PolygonScan 上完成驗證，任何人都能檢視。話雖如此，MOL 在上市前採用的固定基準匯率並不是市場交易所形成的匯率，請務必只在不會造成自己負擔的範圍內參與。</p></details>
+      <details class="qa"><summary>我需要準備多少？</summary><p>推薦人層級：承諾持有的 MOL（PV）約需 $620 等值的 BNB + .dex 註冊費用（請看網站，抓 $10～50）+ $5～10 的網路手續費 ≈ 約 $650～800 等值。若同時擔任佈道者，承諾持有規模會提高到約 $930 等值，因此大約是 $960～1,100 等值。（基準匯率 $0.000031；一律以兌換畫面上顯示的數值為準。以上僅為示例，不構成任何保證。）</p></details>
+      <details class="qa"><summary>這個頁面有韓文版嗎？</summary><p>有 —— <a href="dener-onboarding.html">韓文頁面</a>是原始版本，並收錄了更多針對韓國本地交易所的韓文參考資料。影片旁白為韓語；本頁每支影片旁邊都附有中文文字摘要。</p></details>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ================= GLOSSARY ================= -->
+<section class="step" id="gloss">
+  <div class="wrap">
+    <div class="step-head"><div class="step-num" style="background:var(--gold-d)">A</div><div><h2>名詞解釋</h2><p class="goal" style="margin:6px 0 0">看到不熟悉的詞，隨時回來這裡查。</p></div></div>
+    <table class="gloss">
+      <tr><th style="width:190px">名詞</th><th>白話說明</th></tr>
+      <tr><td>錢包</td><td>放在手機或瀏覽器裡、用來保管你的幣的金庫。鑰匙（助記詞）由你自己保管</td></tr>
+      <tr><td>MetaMask</td><td>使用人數最多的錢包軟體。狐狸圖示的那個</td></tr>
+      <tr><td>助記詞</td><td>用來還原錢包的那 12 個單字。外流＝全部失去。只能抄在紙上保管</td></tr>
+      <tr><td>鏈 / 網路</td><td>幣移動時走的「道路」。本指南會用到兩條：BNB Chain（黃色那條）與 Polygon（紫色那條）</td></tr>
+      <tr><td>BNB / POL</td><td>各自那條鏈上用來支付手續費與付款的基礎幣種</td></tr>
+      <tr><td>Gas 費</td><td>使用一條鏈時要付的小額通行費</td></tr>
+      <tr><td>簽署</td><td>在錢包裡按下「確認」以核可一筆交易 —— 就像蓋章一樣</td></tr>
+      <tr><td>旅行規則（Travel Rule）</td><td>韓國等司法管轄區的規定：從交易所提幣到個人錢包前，必須先登錄並驗證錢包地址</td></tr>
+      <tr><td>MOL</td><td>MolePin 的基礎幣種。總量固定為 6.94 兆枚</td></tr>
+      <tr><td>Dener</td><td>持有 20,000,000 MOL 而獲得敘任的生態系夥伴 —— 「礦脈的守護者」</td></tr>
+      <tr><td>承諾持有的 MOL（PV）</td><td>為取得獎勵資格而放置的 MOL。所有獎勵的起點</td></tr>
+      <tr><td>推薦人</td><td>依照透過自己連結加入的成員（第一層）以及其下層（第二層）的參與金額，取得獎勵的人</td></tr>
+      <tr><td>佈道者</td><td>參與者在兌換當下所指定的引薦者。可獲得該筆被指定參與金額的 5%</td></tr>
+      <tr><td>.dex 名稱</td><td>用來取代錢包地址、好唸好記的網路名稱（一枚 NFT）。例如 roy.dex</td></tr>
+      <tr><td>代表名稱</td><td>用來代表你錢包的那個 .dex 名稱 —— 就是名片上的名字</td></tr>
+      <tr><td>領取（Claim）</td><td>把累積的獎勵拉進自己錢包 —— 也就是「claim」按鈕</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:#fff">DENER 上手指南</b> · MolePin · DigMol · DEXignation</div>
+    <div>參考網站：<a href="https://dexignation.com" target="_blank" rel="noopener">dexignation.com</a> · <a href="https://digmol.com" target="_blank" rel="noopener">digmol.com</a> · <a href="https://docs.dexignation.com" target="_blank" rel="noopener">docs.dexignation.com</a> · 聯絡方式：punditcode@gmail.com</div>
+    <div style="margin-top:8px">本頁面為說明如何參與生態系的資訊性資料，並不構成投資建議，亦非勸誘任何人買賣或投入特定數位資產。數位資產的價值波動劇烈；獎勵會隨活動、政策與參與流量而變動，不保證任何形式的回報。本頁的示例數字為協助理解而做的假設性試算，可能與實際結果不同，僅為示例，不構成任何保證。政策、比率與流程都可能變更，一律以實際服務畫面上顯示的數值為準。本中文頁面為韓文原文的翻譯版本；若兩者內容有出入，以韓文版為準。© 2026 MolePin Community</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // scroll progress bar
+  var bar=document.getElementById('scrollbar');
+  window.addEventListener('scroll',function(){
+    var h=document.documentElement;
+    var p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+    bar.style.width=p+'%';
+  });
+
+  // step completion (checkbox <-> pill <-> nav), persisted if storage available
+  var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return this._m&&this._m[k]}},
+             set:function(k,v){try{localStorage.setItem(k,v)}catch(e){this._m=this._m||{};this._m[k]=v}},
+             del:function(k){try{localStorage.removeItem(k)}catch(e){if(this._m)delete this._m[k]}}};
+  function setStep(n,on){
+    var cb=document.querySelector('input[data-step="'+n+'"]');
+    if(cb)cb.checked=on;
+    var pill=document.querySelector('.pill[data-step="'+n+'"]');
+    if(pill)pill.classList.toggle('on',on);
+    var nav=document.querySelector('nav a[data-step="'+n+'"]');
+    if(nav)nav.classList.toggle('done',on);
+    on?store.set('dener_step_'+n,'1'):store.del('dener_step_'+n);
+  }
+  for(var i=1;i<=6;i++){(function(n){
+    if(store.get('dener_step_'+n)==='1')setStep(n,true);
+    var cb=document.querySelector('input[data-step="'+n+'"]');
+    if(cb)cb.addEventListener('change',function(){setStep(n,this.checked)});
+    var pill=document.querySelector('.pill[data-step="'+n+'"]');
+    if(pill)pill.addEventListener('click',function(){setStep(n,!pill.classList.contains('on'))});
+  })(i);}
+
+  // video slots: data-video-src="file.mp4" (local file) takes priority, else data-video-id="YOUTUBE_ID"
+  document.querySelectorAll('.video-box').forEach(function(box){
+    var src=box.getAttribute('data-video-src');
+    var id=box.getAttribute('data-video-id');
+    if(src){
+      box.innerHTML='<div class="video-wrap"><video src="'+src+'" title="Guide video (Korean narration)" controls preload="metadata" playsinline></video></div>';
+    }else if(id){
+      box.innerHTML='<div class="video-wrap"><iframe src="https://www.youtube.com/embed/'+id+'" title="Guide video (Korean narration)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>與莫莉一起成為 Dener — 對話式指南</title>
+<meta name="description" content="Dener 與佈道者的對話式入門指南。回答幾個問題，只看你真正需要的步驟。">
+<link rel="alternate" hreflang="ko" href="dener-chat-guide.html">
+<link rel="alternate" hreflang="en" href="dener-chat-guide.en.html">
+<link rel="alternate" hreflang="ja" href="dener-chat-guide.ja.html">
+<link rel="alternate" hreflang="zh-Hant" href="dener-chat-guide.zh-Hant.html">
+<style>
+  :root{
+    --dark:#261A0D; --dark2:#3A2A16; --gold:#E8A020; --gold-d:#9C6B06;
+    --ink:#2B2418; --mut:#8C8272; --tint:#FBF5EA; --line:#EDE5D6;
+    --poly:#7B3FE4; --red:#C0392B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;background:#F3EDE2;color:var(--ink);height:100dvh;display:flex;flex-direction:column}
+
+  header{background:var(--dark);color:#fff;padding:12px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;flex:none}
+  header .hrow{display:flex;align-items:center;gap:12px}
+  .avatar{width:42px;height:42px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+  header .t{text-align:center}
+  header .t b{display:block;font-size:15px}
+  header .t span{font-size:11.5px;color:#C9B78F}
+  header .hactions{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+  .hbtn{background:var(--dark2);color:#E8DCC8;border:none;border-radius:14px;padding:7px 13px;font-size:12px;cursor:pointer;font-family:inherit}
+  .hbtn:hover{background:#4a3720}
+  .hbtn.doc{background:var(--gold);color:var(--dark);font-weight:800}
+  .hbtn.doc:hover{background:#f5b23c}
+  .langmenu{position:relative;flex:none}
+  .langmenu>summary{list-style:none;cursor:pointer;font-size:12px;font-weight:800;padding:7px 12px;border-radius:14px;border:1px solid #4a3720;background:var(--dark2);color:#E8DCC8;white-space:nowrap;display:flex;align-items:center;gap:5px}
+  .langmenu>summary::-webkit-details-marker{display:none}
+  .langmenu>summary::marker{content:""}
+  .langmenu>summary:hover{background:#4a3720;color:#fff}
+  .langmenu[open]>summary{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+  .langlist{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-width:152px;box-shadow:0 10px 28px rgba(38,26,13,.22);z-index:200;display:flex;flex-direction:column;gap:2px}
+  .langlist a{display:block;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .langlist a:hover{background:var(--tint);color:var(--gold-d)}
+  .langlist a.on{background:var(--gold);color:var(--dark)}
+  #stepbar{height:4px;background:var(--dark2);flex:none}
+  #stepfill{height:100%;width:0;background:var(--gold);transition:width .4s}
+
+  main{flex:1;overflow-y:auto;padding:20px 14px 12px;-webkit-overflow-scrolling:touch}
+  .chat{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+
+  .row{display:flex;gap:8px;align-items:flex-end}
+  .row.bot{justify-content:flex-start}
+  .row.user{justify-content:flex-end}
+  .mini{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .bubble{max-width:82%;padding:11px 15px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-line;box-shadow:0 2px 6px rgba(38,26,13,.07)}
+  .bot .bubble{background:#fff;border-bottom-left-radius:5px}
+  .user .bubble{background:var(--gold);color:var(--dark);font-weight:700;border-bottom-right-radius:5px}
+  .bubble b{color:var(--gold-d)}
+  .user .bubble b{color:var(--dark)}
+  .bubble a{color:var(--poly);font-weight:700}
+  .bubble .warn{display:block;margin-top:8px;background:#FBEAE6;color:var(--red);font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:10px}
+  .bubble .tip{display:block;margin-top:8px;background:var(--tint);color:#5A5142;font-size:12.5px;padding:8px 12px;border-radius:10px}
+  .bubble .steps{display:block;margin-top:8px;background:var(--tint);border-radius:10px;padding:10px 12px 10px 14px;font-size:13px}
+  .bubble .steps i{display:block;font-style:normal;padding:4px 0;color:#4A4234}
+  .bubble .steps i::before{content:"▸ ";color:var(--gold)}
+
+  .typing{display:inline-flex;gap:4px;padding:14px 16px;background:#fff;border-radius:16px;border-bottom-left-radius:5px}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#C9B78F;animation:bl 1s infinite}
+  .typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+  @keyframes bl{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+
+  #choices{flex:none;background:linear-gradient(to top,#F3EDE2 80%,transparent);padding:10px 14px 18px}
+  .ch-in{max-width:680px;margin:0 auto;display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}
+  .choice{border:2px solid var(--gold);background:#fff;color:var(--gold-d);font-weight:800;font-size:13.5px;padding:11px 18px;border-radius:22px;cursor:pointer;font-family:inherit;transition:all .15s}
+  .choice:hover{background:var(--gold);color:var(--dark)}
+  .choice.sub{border-color:var(--line);color:var(--mut);font-weight:600}
+  .choice.sub:hover{background:var(--tint);color:var(--gold-d)}
+
+  .badge-done{display:inline-block;background:#E6F3E6;color:#2E7D32;font-size:12px;font-weight:800;padding:3px 10px;border-radius:10px;margin-right:4px}
+  footer{flex:none;text-align:center;font-size:10.5px;color:var(--mut);padding:6px 12px 10px;background:#F3EDE2}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <div class="avatar">⛏</div>
+    <div class="t"><b>莫莉 — 礦脈的嚮導</b><span id="stage">成為 Dener · 對話式指南</span></div>
+  </div>
+  <div class="hactions">
+    <button class="hbtn doc" onclick="location.href='dener-onboarding.zh-Hant.html'">📖 文件版指南</button>
+    <button class="hbtn" onclick="restart()">↺ 重新開始</button>
+    <details class="langmenu">
+      <summary>🌐 繁體中文</summary>
+      <div class="langlist">
+      <a href="dener-chat-guide.html">한국어</a>
+      <a href="dener-chat-guide.en.html">English</a>
+      <a href="dener-chat-guide.ja.html">日本語</a>
+      <a href="dener-chat-guide.zh-Hant.html" class="on" aria-current="true">繁體中文</a>
+      </div>
+    </details>
+  </div>
+</header>
+<div id="stepbar"><div id="stepfill"></div></div>
+
+<main id="main"><div class="chat" id="chat"></div></main>
+
+<div id="choices"><div class="ch-in" id="chin"></div></div>
+
+<footer>本指南為說明生態系參與流程的資訊性資料，並非投資建議 · 獎勵不受保證 · © 2026 MolePin Community</footer>
+
+<script>
+/* ================= conversation script ================= */
+const FLOW = {
+  start:{p:5,m:[
+    "你好！我是艾爾多拉西亞礦脈的嚮導，<b>莫莉</b> ⛏",
+    "成為守護沒落王國的 <b>Dener</b> 這條路，我會在旁邊一題一題陪你走。\n只會說明你真正需要的步驟，所以進行得很快！",
+    "先問一個問題。你已經知道 <b>Dener 是什麼</b> 了嗎？"
+  ],c:[["知道，直接開始","q_wallet"],["還不知道，請說明","what_dener"]]},
+
+  what_dener:{p:8,m:[
+    "沒問題，一分鐘就能懂 🙂",
+    "<b>Dener</b> 是 MOL 生態系的夥伴。持有 <b>20,000,000</b> 個 MOL（約相當於 $620）就會開啟這個角色，而「敘任」紀錄會寫在區塊鏈上。",
+    "成為 Dener 後會開啟這些：<span class='steps'><i>每日 MOL ↔ BNB 兌換資格</i><i>依你介紹的人的參與準備規模而來的獎勵（10% / 5%）</i><i>看廣告開採 MOL 的任務</i></span>",
+    "<span class='tip'>獎勵是活動的結果，並不受保證。原則很簡單：只在不勉強自己的範圍內參與。</span>準備好了就開始吧？"
+  ],c:[["好，開始！","q_wallet"]]},
+
+  /* ---------- STEP 1: wallet ---------- */
+  q_wallet:{p:12,stage:"1/6 錢包",m:[
+    "這是 STEP 1。要成為 Dener，你需要 <b>BNB 和 POL</b> 兩種代幣，還要有 <b>裝它們的錢包</b>。",
+    "你已經有 <b>MetaMask</b> 錢包了嗎？🦊"
+  ],c:[["有，我已經有了","q_network"],["沒有，我還沒有","how_wallet"],["MetaMask 是什麼？","what_wallet"]]},
+
+  what_wallet:{p:14,m:[
+    "MetaMask 就是 <b>你手機或瀏覽器裡的代幣保險箱</b>。狐狸圖示就是它的招牌 🦊",
+    "它用起來很像銀行 App，但有一個關鍵差別 — <b>鑰匙（12 個單字的助記詞）是你自己保管，不是銀行</b>。所以那 12 個單字真的非常重要。",
+    "要我教你怎麼建立嗎？"
+  ],c:[["好，我來建立一個","how_wallet"]]},
+
+  how_wallet:{p:16,m:[
+    "跟著做！<span class='steps'><i><b>電腦：</b>到 Chrome 線上應用程式商店搜尋「MetaMask」→ 確認狐狸圖示 → 加到 Chrome</i><i><b>手機：</b>從應用程式商店安裝 MetaMask 官方 App</i><i>選「建立新錢包」→ 設定密碼</i><i>出現 12 個單字的助記詞時，請寫在 <b>紙上</b> 妥善保管</i></span>",
+    "<span class='warn'>⚠️ 12 個單字的助記詞是你全部資產的鑰匙。\n不要拍照 ❌ 不要用通訊軟體傳 ❌ 不論誰來問都不要告訴他 ❌\n會來問你的人，毫無例外都是詐騙。</span>",
+    "需要官方安裝說明的話，請參考 <a href='https://support.metamask.io/start/getting-started-with-metamask/' target='_blank'>MetaMask 官方文件</a>。",
+    "安裝和建立錢包都完成了嗎？"
+  ],c:[["完成了！","q_network"],["之後再做，先繼續聽","q_network"]]},
+
+  /* ---------- network ---------- */
+  q_network:{p:22,stage:"1/6 錢包",m:[
+    "很好！錢包建好之後，還要開兩條路 🛣",
+    "代幣是沿著叫做「鏈」的路移動的，我們會用到兩條：<b>BNB Chain（黃色的路）</b> 和 <b>Polygon（紫色的路）</b>。\n錢包只有一個，你只是切換走哪條路而已。",
+    "這兩個網路都已經加進你的 MetaMask 了嗎？"
+  ],c:[["兩個都有了","q_bnb"],["要怎麼加？","how_network"]]},
+
+  how_network:{p:24,m:[
+    "很簡單。挑一個你方便的做法：<span class='steps'><i><b>方法一：</b>點 MetaMask 上方的網路選單 →「新增網路」→ 從清單中選 BNB Smart Chain / Polygon</i><i><b>方法二：</b>前往 <a href='https://chainlist.org' target='_blank'>chainlist.org</a> → 搜尋 → Connect Wallet → Add to MetaMask（自動加入）</i></span>",
+    "<span class='tip'>官方說明：<a href='https://support.metamask.io/networks-and-sidechains/managing-networks/add-a-network-using-chainlist/' target='_blank'>用 Chainlist 新增網路</a></span>",
+    "都加好了嗎？"
+  ],c:[["加好了！","q_bnb"]]},
+
+  /* ---------- STEP 2: BNB ---------- */
+  q_bnb:{p:30,stage:"2/6 準備 BNB",m:[
+    "<span class='badge-done'>✓ 錢包準備完成</span>進入 STEP 2！",
+    "現在你需要 <b>要用來兌換的 BNB</b> — 以 Dener 的標準來說，大約是 <b>相當於 $620 再加上一點手續費的餘裕</b>。",
+    "你的 MetaMask 錢包裡已經有 BNB 了嗎？"
+  ],c:[["有，而且夠用","q_pol"],["沒有，我需要去準備","q_exchange"]]},
+
+  q_exchange:{p:34,m:[
+    "那就在交易所準備好，再轉到你的錢包裡。",
+    "你目前有在使用 <b>哪個交易所</b> 嗎？"
+  ],c:[["Binance","ex_binance"],["Bithumb（韓國）","ex_bithumb"],["Upbit（韓國）","ex_upbit"],["我是第一次","ex_none"]]},
+
+  ex_none:{p:36,m:[
+    "沒關係，大家都有第一次 🙂",
+    "註冊通常需要 <b>附照片的身分證件，以及你本人名義的銀行帳戶</b>。驗證可能要花上一天左右，所以早點辦好比較安心。",
+    "可以從這裡開始：<span class='steps'><i><b>Binance</b>（國際平台，用電子郵件註冊）— 最單純的路線，因為它直接就有 BNB</i><i><b>Upbit / Bithumb</b> — 韓國的交易所；如果你要用韓元入金會比較方便</i><i>不論選哪一個，都請先完成身分驗證（KYC）</i></span>",
+    "你想用哪一個交易所呢？"
+  ],c:[["Binance","ex_binance"],["Bithumb","ex_bithumb"],["Upbit","ex_upbit"]]},
+
+  ex_binance:{p:40,m:[
+    "Binance 最單純，因為你可以 <b>直接取得 BNB</b>！<span class='steps'><i>註冊 + 身分驗證（KYC）— 附照片的身分證件，最長 48 小時</i><i>入金之後，兌換成 BNB</i><i>順便準備相當於 $10~20 的 POL（用於網域註冊與手續費）</i></span>",
+    "接下來是重點 — <b>轉到你的錢包（提領）</b>：<span class='steps'><i>從 MetaMask 複製你的地址（0x…）</i><i>Binance 提領 → BNB → 網路一定要選 <b>BSC (BEP-20)</b></i><i>POL 提領 → 網路選 <b>Polygon</b></i><i>先送一筆小額測試 → 確認到帳 → 再轉其餘的</i></span>",
+    "<span class='warn'>⚠️ 選錯網路可能會讓代幣消失。按下確認前請檢查兩次！</span>",
+    "BNB 已經進到 MetaMask 了嗎？"
+  ],c:[["到帳了！","q_pol"],["提領被擋住了（Travel Rule？）","travel_rule"]]},
+
+  ex_bithumb:{p:40,m:[
+    "Bithumb 也是 <b>直接處理 BNB</b> 的交易所。<span class='steps'><i>註冊 + 綁定銀行帳戶（<a href='https://support.bithumb.com/hc/ko/articles/51036139415321' target='_blank'>官方說明，韓文</a>）</i><i>韓元入金 → 兌換成 BNB</i><i>順便準備相當於 $10~20 的 POL</i></span>",
+    "<span class='warn'>⚠️ 從 Bithumb 提領到 MetaMask 這類個人錢包時，可能會因為 Travel Rule 需要先登錄錢包並通過審核。請先確認「個人錢包登錄」的選單。</span>",
+    "提領時，請選 <b>BNB → BSC (BEP-20)</b>、<b>POL → Polygon</b>，而且一定要先做小額測試！",
+    "BNB 已經進到 MetaMask 了嗎？"
+  ],c:[["到帳了！","q_pol"],["提領被擋住了（Travel Rule？）","travel_rule"]]},
+
+  ex_upbit:{p:40,m:[
+    "Upbit 有一個特點 — <b>它不直接處理 BNB。</b> 所以有兩條路可以走。",
+    "<b>路線 A（推薦）：</b>在 Upbit 換成轉帳快的幣（XRP、TRX 等）→ <b>轉到 Binance</b> → 在那裡換成 BNB → 用 BSC 網路提領到 MetaMask。",
+    "<b>路線 B：</b>Upbit 有處理 POL → 直接用 Polygon 網路把 POL 提領到 MetaMask。",
+    "<span class='tip'>從 Upbit 提領到個人錢包，需要先 <a href='https://support.upbit.com/hc/ko/articles/6713306957977' target='_blank'>登錄錢包地址</a>（Travel Rule）。MetaMask 可以線上登錄。</span>",
+    "BNB 和 POL 都進到 MetaMask 了嗎？"
+  ],c:[["都到帳了！","q_pol"],["提領被擋住了（Travel Rule？）","travel_rule"]]},
+
+  travel_rule:{p:42,m:[
+    "那很可能是 <b>Travel Rule</b> 的關係 — 這是要求你在轉較大金額到個人錢包之前，必須先登錄該錢包的規範。",
+    "解決方式：<span class='steps'><i>在交易所 App 裡找到「個人錢包登錄」（白名單）選單</i><i>登錄你的 MetaMask 地址，並驗證錢包所有權</i><i>Upbit：<a href='https://support.upbit.com/hc/ko/articles/6713306957977' target='_blank'>可以線上登錄</a> / Bithumb：可能需要客服審核</i><i>審核通過後，再試一次提領</i></span>",
+    "想比較各家韓國交易所的政策，<a href='https://www.tokenpost.kr/article-85909' target='_blank'>這篇整理</a> 很實用（韓文）。",
+    "登錄並順利提領了嗎？"
+  ],c:[["搞定了！","q_pol"]]},
+
+  /* ---------- POL ---------- */
+  q_pol:{p:48,stage:"2/6 準備 BNB",m:[
+    "<span class='badge-done'>✓ BNB 準備完成</span>",
+    "還有一件事 — 你也需要少量的 <b>POL</b>（相當於 $10~20），用來付 .dex 名稱的註冊費，以及路上的過路費（gas 手續費）。",
+    "你的錢包裡有 POL 嗎？"
+  ],c:[["有","q_dex"],["還沒有，要怎麼準備？","how_pol"]]},
+
+  how_pol:{p:50,m:[
+    "很簡單！<span class='steps'><i>Upbit / Bithumb：搜尋 POL → 兌換少量 → 用 <b>Polygon 網路</b> 提領到 MetaMask</i><i>Binance：兌換成 POL → 提領網路選 Polygon</i></span>",
+    "<span class='tip'>要把 MetaMask 切換到 Polygon 網路，才看得到 POL 的餘額。看不到時先別慌！</span>",
+    "都準備好了嗎？"
+  ],c:[["準備好了！","q_dex"]]},
+
+  /* ---------- STEP 3: .dex ---------- */
+  q_dex:{p:56,stage:"3/6 .dex 名稱",m:[
+    "<span class='badge-done'>✓ 代幣準備完成</span>接下來是有趣的部分 🎨",
+    "該來做 <b>屬於你自己的名牌，也就是 .dex 網域</b> 了，用來代替難以辨認的錢包地址（0x3f8a…）。\n像是 <b>roy.dex</b> 這樣。這個名字也會用在你的推薦連結裡。",
+    "你已經有 .dex 名稱了嗎？"
+  ],c:[["有！","q_primary"],["還沒有，來做一個","how_dex"]]},
+
+  how_dex:{p:60,m:[
+    "我們出發吧。從這裡開始，我們走的是 <b>紫色的路（Polygon）</b>。<span class='steps'><i>前往 <a href='https://dexignation.com' target='_blank'>dexignation.com</a>（手機請用 MetaMask App 內建的瀏覽器）</i><i>點右上角「連結錢包」→ 允許切換到 Polygon</i><i>搜尋你想要的名稱 → 選擇期間（1/3/5/10/15 年）→ 用 POL、USDT 或 USDC 付款</i></span>",
+    "註冊需要 <b>兩次簽章</b>：① 申請 → ② 稍等一下 → ③ 確認。\n中間不要關掉視窗，一路做到最後！",
+    "<span class='tip'>連結錢包只是「出示名片」，代幣不會離開你的錢包。只有按下「簽章」時，代幣才會移動。</span>",
+    "名稱註冊好了嗎？"
+  ],c:[["完成！我有自己的名字了","q_primary"]]},
+
+  /* ---------- STEP 4: primary name + BNB wallet ---------- */
+  q_primary:{p:68,stage:"4/6 主要名稱",m:[
+    "<span class='badge-done'>✓ .dex 名稱到手</span>",
+    "現在把那個名稱指定為 <b>主要名稱</b>，並在它後面登錄 <b>要接收獎勵的 BNB 錢包地址</b>。\n有做這一步，獎勵才會送到你的錢包！",
+    "主要名稱設定與 BNB 錢包登錄都完成了嗎？"
+  ],c:[["兩個都做好了","q_distributor"],["請教我怎麼做","how_primary"]]},
+
+  how_primary:{p:72,m:[
+    "我們繼續在 DEXignation 上操作。<span class='steps'><i><b>主要名稱：</b>我的帳號 → 我的網域 →「設為主要名稱」→ 簽章</i><i><b>BNB 錢包：</b>我的網域 →「管理紀錄」→ 新增地址 → 鏈選擇 <b>BNB (BSC)</b> → 輸入地址 → 簽章</i><i>到 digmol.com 儀表板確認顯示正常</i></span>",
+    "<span class='warn'>⚠️ 錢包地址請務必用複製貼上。只要錯一個字，獎勵就永遠到不了你手上。</span>",
+    "都完成了嗎？"
+  ],c:[["完成了！","q_distributor"]]},
+
+  /* ---------- STEP 5: evangelist check + swap ---------- */
+  q_distributor:{p:78,stage:"5/6 MOL 兌換",m:[
+    "<span class='badge-done'>✓ 名牌設定完成</span>最後一道關卡就在前面！",
+    "兌換前還有一件事 — 你需要知道 <b>介紹你進來的佈道者的 .dex 名稱</b>。\n在兌換畫面輸入之後，你會得到 <b>折扣（最高 15%）</b>，對方也能拿到應得的獎勵。",
+    "你知道你的佈道者的 .dex 名稱嗎？"
+  ],c:[["知道！","how_swap"],["不知道耶…","no_distributor"]]},
+
+  no_distributor:{p:80,m:[
+    "沒關係，有兩個處理方式：<span class='steps'><i>如果有人介紹你進這個生態系 → 直接問他「你的 .dex 名稱是什麼？」</i><i>如果沒有人介紹你 → 寫信到 punditcode@gmail.com 聯絡團隊，他們會幫你媒合</i></span>",
+    "<span class='tip'>不輸入也能兌換，但就拿不到折扣了 — 建議先確認再進行。</span>",
+    "確認好之後，我們就去兌換吧！"
+  ],c:[["知道了，去兌換","how_swap"]]},
+
+  how_swap:{p:86,m:[
+    "好，切換到 <b>黃色的路（BNB Chain）</b>，往礦脈裡走 ⛏<span class='steps'><i>前往 <a href='https://digmol.com' target='_blank'>digmol.com</a> → 連結錢包 → 切換到 BSC</i><i>在兌換（敘任）畫面，<b>於「折扣網域（.dex）」欄位輸入佈道者的名稱</b></i><i>輸入 BNB 數量 → 確認自動計算出的 MOL 數量</i><i>簽章一次 → MOL 就進到你的錢包了！</i></span>",
+    "當你持有的 MOL 達到 <b>20,000,000</b> 的那一刻，敘任進度條會跳到 100%，<b>你就是 Dener 了</b> 🎉",
+    "<span class='tip'>兌換比率寫在合約裡 — 不能議價，也沒有差別待遇。確切的兌換比率，請以兌換畫面上顯示的基準匯率為準。</span>",
+    "敘任完成了嗎？"
+  ],c:[["🎉 我成為 Dener 了！","done_dener"],["今天先到這裡","summary"]]},
+
+  /* ---------- completion & evangelist branch ---------- */
+  done_dener:{p:92,stage:"6/6 開始活動",m:[
+    "恭喜你，守護者！🛡✨\n你的敘任已經刻進艾爾多拉西亞的礦脈裡了。",
+    "從現在起，你的日常很簡單：<span class='steps'><i>分享你的推薦連結：<b>app.digmol.com/ref?ref=你的名字.dex</b></i><i>每天晚上 22:00 結算截止 → 23:00 起可以領取</i><i>沒領走的獎勵不會消失，會累積在鏈上</i></span>",
+    "最後問你一個問題 — 你想再往前一步，成為 <b>佈道者</b> 嗎？\n這個角色是：每當有參與者在兌換時指定你，你就能得到該筆參與準備規模 5% 的獎勵。"
+  ],c:[["請告訴我佈道者的事！","how_evangelist"],["當 Dener 對我來說就夠了","summary"]]},
+
+  how_evangelist:{p:96,m:[
+    "很好的選擇。準備方式如下：<span class='steps'><i>額外兌換 MOL，讓承諾持有的 MOL（PV）達到 <b>30,000,000</b>（大約再相當於 $310）</i><i><b>必須完成管理員登錄！</b>寫信到 punditcode@gmail.com 申請登錄與啟用</i><i>在 digmol.com 打開「我的佈道者儀表板」，設定你的折扣率（0~15%）— 你自己的 5% 是自動的</i></span>",
+    "佈道者的活動，濃縮成一句話就是：\n<b>「在兌換畫面的折扣欄位填我的名字（你的名字.dex），你就有折扣！」</b>\n指定是選填的，所以沒有說出口，就不會產生任何獎勵。",
+    "<span class='tip'>推薦人獎勵與佈道者獎勵是分開的兩條軸，所以如果你介紹的人同時指定了你，同一筆參與兩者都會成立（單筆最高 25%；僅為示例，不構成任何保證）。</span>"
+  ],c:[["太好了，幫我整理一下","summary"]]},
+
+  summary:{p:100,stage:"完成",m:[
+    "這是我們今天一起走過的路 📋<span class='steps'><i>① 建立 MetaMask 錢包 + 加入 BSC 與 Polygon 網路</i><i>② 在交易所準備 BNB 和 POL → 轉到你的錢包（注意 Travel Rule！）</i><i>③ 在 dexignation.com 註冊 .dex 名稱（紫色的路）</i><i>④ 設定主要名稱 + 登錄接收獎勵的 BNB 錢包</i><i>⑤ 在 digmol.com 輸入佈道者的 .dex → 把 BNB 兌換成 MOL → 20,000,000 = 敘任</i><i>⑥（選擇性）30,000,000 + 管理員登錄 = 佈道者</i></span>",
+    "每個畫面的詳細說明和影片，都在 <a href='dener-onboarding.zh-Hant.html'>文件版指南</a> 裡。",
+    "<span class='tip'>請記住三件事：助記詞只寫在紙上 · 地址只用複製貼上 · 每次提領前先確認網路。還有 — 在不勉強自己的範圍內參與，並享受這個過程 🙂</span>",
+    "隨時都可以再回來問我。我會在礦脈裡等你！⛏"
+  ],c:[["↺ 重新開始","restart"],["📖 打開文件版指南","goto_docs"]]},
+};
+
+/* ================= engine ================= */
+const chat = document.getElementById('chat');
+const chin = document.getElementById('chin');
+const fill = document.getElementById('stepfill');
+const stage = document.getElementById('stage');
+const main = document.getElementById('main');
+let busy = false;
+
+function scrollDown(){ main.scrollTop = main.scrollHeight; }
+
+function botBubble(html){
+  const row = document.createElement('div'); row.className = 'row bot';
+  row.innerHTML = '<div class="mini">⛏</div><div class="bubble">' + html + '</div>';
+  chat.appendChild(row); scrollDown();
+}
+function userBubble(text){
+  const row = document.createElement('div'); row.className = 'row user';
+  const b = document.createElement('div'); b.className = 'bubble'; b.textContent = text;
+  row.appendChild(b); chat.appendChild(row); scrollDown();
+}
+function typing(){
+  const row = document.createElement('div'); row.className = 'row bot';
+  row.innerHTML = '<div class="mini">⛏</div><div class="typing"><i></i><i></i><i></i></div>';
+  chat.appendChild(row); scrollDown(); return row;
+}
+
+function show(nodeId){
+  const node = FLOW[nodeId];
+  if(!node) return;
+  busy = true; chin.innerHTML = '';
+  if(node.p) fill.style.width = node.p + '%';
+  if(node.stage) stage.textContent = '成為 Dener · ' + node.stage;
+  let i = 0;
+  (function next(){
+    if(i >= node.m.length){
+      busy = false;
+      node.c.forEach(function(ch, idx){
+        const btn = document.createElement('button');
+        btn.className = 'choice' + (idx > 0 && node.c.length > 2 && idx === node.c.length - 1 ? ' sub' : '');
+        btn.textContent = ch[0];
+        btn.onclick = function(){ if(busy) return; pick(ch[0], ch[1]); };
+        chin.appendChild(btn);
+      });
+      scrollDown(); return;
+    }
+    const t = typing();
+    setTimeout(function(){
+      t.remove(); botBubble(node.m[i]); i++;
+      setTimeout(next, 250);
+    }, Math.min(500 + node.m[i].length * 3, 1300));
+  })();
+}
+
+function pick(label, next){
+  userBubble(label);
+  if(next === 'restart'){ setTimeout(restart, 400); return; }
+  if(next === 'goto_docs'){ location.href = 'dener-onboarding.zh-Hant.html'; return; }
+  setTimeout(function(){ show(next); }, 350);
+}
+
+function restart(){
+  chat.innerHTML = ''; chin.innerHTML = ''; fill.style.width = '0';
+  stage.textContent = '成為 Dener · 對話式指南';
+  show('start');
+}
+
+show('start');
+
+/* langmenu-close: close the language dropdown on outside click */
+document.addEventListener('click',function(e){
+  document.querySelectorAll('details.langmenu[open]').forEach(function(d){
+    if(!d.contains(e.target)) d.removeAttribute('open');
+  });
+});
+</script>
+</body>
+</html>

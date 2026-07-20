@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>モーリーと一緒にデナーになる — 会話形ガイド</title>
+<meta name="description" content="デナーとエバンジェリストのための会話形オンボーディングガイド。いくつかの質問に答えるだけで、あなたに必要なステップだけをご案内します。">
+<link rel="alternate" hreflang="ko" href="dener-chat-guide.html">
+<link rel="alternate" hreflang="en" href="dener-chat-guide.en.html">
+<link rel="alternate" hreflang="ja" href="dener-chat-guide.ja.html">
+<link rel="alternate" hreflang="zh-Hant" href="dener-chat-guide.zh-Hant.html">
+<style>
+  :root{
+    --dark:#261A0D; --dark2:#3A2A16; --gold:#E8A020; --gold-d:#9C6B06;
+    --ink:#2B2418; --mut:#8C8272; --tint:#FBF5EA; --line:#EDE5D6;
+    --poly:#7B3FE4; --red:#C0392B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard','Hiragino Sans','Yu Gothic UI','Meiryo',system-ui,sans-serif;background:#F3EDE2;color:var(--ink);height:100dvh;display:flex;flex-direction:column}
+
+  header{background:var(--dark);color:#fff;padding:12px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;flex:none}
+  header .hrow{display:flex;align-items:center;gap:12px}
+  .avatar{width:42px;height:42px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+  header .t{text-align:center}
+  header .t b{display:block;font-size:15px}
+  header .t span{font-size:11.5px;color:#C9B78F}
+  header .hactions{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+  .hbtn{background:var(--dark2);color:#E8DCC8;border:none;border-radius:14px;padding:7px 13px;font-size:12px;cursor:pointer;font-family:inherit}
+  .hbtn:hover{background:#4a3720}
+  .hbtn.doc{background:var(--gold);color:var(--dark);font-weight:800}
+  .hbtn.doc:hover{background:#f5b23c}
+  .langmenu{position:relative;flex:none}
+  .langmenu>summary{list-style:none;cursor:pointer;font-size:12px;font-weight:800;padding:7px 12px;border-radius:14px;border:1px solid #4a3720;background:var(--dark2);color:#E8DCC8;white-space:nowrap;display:flex;align-items:center;gap:5px}
+  .langmenu>summary::-webkit-details-marker{display:none}
+  .langmenu>summary::marker{content:""}
+  .langmenu>summary:hover{background:#4a3720;color:#fff}
+  .langmenu[open]>summary{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+  .langlist{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-width:152px;box-shadow:0 10px 28px rgba(38,26,13,.22);z-index:200;display:flex;flex-direction:column;gap:2px}
+  .langlist a{display:block;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .langlist a:hover{background:var(--tint);color:var(--gold-d)}
+  .langlist a.on{background:var(--gold);color:var(--dark)}
+  #stepbar{height:4px;background:var(--dark2);flex:none}
+  #stepfill{height:100%;width:0;background:var(--gold);transition:width .4s}
+
+  main{flex:1;overflow-y:auto;padding:20px 14px 12px;-webkit-overflow-scrolling:touch}
+  .chat{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+
+  .row{display:flex;gap:8px;align-items:flex-end}
+  .row.bot{justify-content:flex-start}
+  .row.user{justify-content:flex-end}
+  .mini{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .bubble{max-width:82%;padding:11px 15px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-line;box-shadow:0 2px 6px rgba(38,26,13,.07)}
+  .bot .bubble{background:#fff;border-bottom-left-radius:5px}
+  .user .bubble{background:var(--gold);color:var(--dark);font-weight:700;border-bottom-right-radius:5px}
+  .bubble b{color:var(--gold-d)}
+  .user .bubble b{color:var(--dark)}
+  .bubble a{color:var(--poly);font-weight:700}
+  .bubble .warn{display:block;margin-top:8px;background:#FBEAE6;color:var(--red);font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:10px}
+  .bubble .tip{display:block;margin-top:8px;background:var(--tint);color:#5A5142;font-size:12.5px;padding:8px 12px;border-radius:10px}
+  .bubble .steps{display:block;margin-top:8px;background:var(--tint);border-radius:10px;padding:10px 12px 10px 14px;font-size:13px}
+  .bubble .steps i{display:block;font-style:normal;padding:4px 0;color:#4A4234}
+  .bubble .steps i::before{content:"▸ ";color:var(--gold)}
+
+  .typing{display:inline-flex;gap:4px;padding:14px 16px;background:#fff;border-radius:16px;border-bottom-left-radius:5px}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#C9B78F;animation:bl 1s infinite}
+  .typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+  @keyframes bl{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+
+  #choices{flex:none;background:linear-gradient(to top,#F3EDE2 80%,transparent);padding:10px 14px 18px}
+  .ch-in{max-width:680px;margin:0 auto;display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}
+  .choice{border:2px solid var(--gold);background:#fff;color:var(--gold-d);font-weight:800;font-size:13.5px;padding:11px 18px;border-radius:22px;cursor:pointer;font-family:inherit;transition:all .15s}
+  .choice:hover{background:var(--gold);color:var(--dark)}
+  .choice.sub{border-color:var(--line);color:var(--mut);font-weight:600}
+  .choice.sub:hover{background:var(--tint);color:var(--gold-d)}
+
+  .badge-done{display:inline-block;background:#E6F3E6;color:#2E7D32;font-size:12px;font-weight:800;padding:3px 10px;border-radius:10px;margin-right:4px}
+  footer{flex:none;text-align:center;font-size:10.5px;color:var(--mut);padding:6px 12px 10px;background:#F3EDE2}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <div class="avatar">⛏</div>
+    <div class="t"><b>モーリー — 鉱脈の案内人</b><span id="stage">デナーになる · 会話形ガイド</span></div>
+  </div>
+  <div class="hactions">
+    <button class="hbtn doc" onclick="location.href='dener-onboarding.ja.html'">📖 ドキュメント版ガイド</button>
+    <button class="hbtn" onclick="restart()">↺ 最初からやり直す</button>
+    <details class="langmenu">
+      <summary>🌐 日本語</summary>
+      <div class="langlist">
+      <a href="dener-chat-guide.html">한국어</a>
+      <a href="dener-chat-guide.en.html">English</a>
+      <a href="dener-chat-guide.ja.html" class="on" aria-current="true">日本語</a>
+      <a href="dener-chat-guide.zh-Hant.html">繁體中文</a>
+      </div>
+    </details>
+  </div>
+</header>
+<div id="stepbar"><div id="stepfill"></div></div>
+
+<main id="main"><div class="chat" id="chat"></div></main>
+
+<div id="choices"><div class="ch-in" id="chin"></div></div>
+
+<footer>本ガイドはエコシステムへの参加手順をご案内する情報提供資料であり、投資助言ではありません · リワードは保証されるものではありません · © 2026 MolePin Community</footer>
+
+<script>
+/* ================= conversation script ================= */
+const FLOW = {
+  start:{p:5,m:[
+    "こんにちは！わたしはエルドラシアの鉱脈の案内人、<b>モーリー</b>です ⛏",
+    "崩れ落ちた王国を守る<b>デナー</b>になる道を、ひとつずつ質問しながらご案内しますね。\n必要なステップだけをお届けするので、あっという間ですよ！",
+    "まずはひとつだけ質問です。<b>デナーが何か</b>はもうご存じですか？"
+  ],c:[["はい、始めましょう","q_wallet"],["いいえ、説明してください","what_dener"]]},
+
+  what_dener:{p:8,m:[
+    "了解です — 1分で分かりますよ 🙂",
+    "<b>デナー</b>はMOLエコシステムのパートナーです。MOLを<b>20,000,000</b>枚（およそ$620相当）保有すると役割が開き、<b>叙任</b>がブロックチェーンに記録されます。",
+    "デナーになると、こんな道が開きます:<span class='steps'><i>毎日MOL↔BNBを交換できる資格</i><i>ご自身が紹介された方の参加準備規模にもとづくリワード（10%／5%）</i><i>広告を見てMOLを掘るミッション</i></span>",
+    "<span class='tip'>リワードは活動の結果であり、保証されるものではありません。金額はすべて例であり、保証されるものではありません。無理のない範囲で参加する — これが原則です。</span>準備はよろしいですか？"
+  ],c:[["はい、行きましょう！","q_wallet"]]},
+
+  /* ---------- STEP 1: wallet ---------- */
+  q_wallet:{p:12,stage:"1/6 ウォレット",m:[
+    "ここからSTEP 1です。デナーになるには<b>BNBとPOL</b>という2つのコインと、それを入れる<b>ウォレット</b>が必要です。",
+    "<b>MetaMask</b>のウォレットは、もうお持ちですか？ 🦊"
+  ],c:[["はい、あります","q_network"],["いいえ、ありません","how_wallet"],["MetaMaskって何ですか？","what_wallet"]]},
+
+  what_wallet:{p:14,m:[
+    "MetaMaskは<b>スマホやブラウザの中にあるコインの金庫</b>です。キツネのアイコンが目印ですよ 🦊",
+    "銀行アプリとよく似ていますが、ひとつだけ大きく違います — <b>鍵（12単語のシードフレーズ）を銀行ではなく、ご自身で保管する</b>という点です。だからこそ、この12単語がとても大切なんです。",
+    "作り方をご案内しましょうか？"
+  ],c:[["はい、作ってみます","how_wallet"]]},
+
+  how_wallet:{p:16,m:[
+    "一緒にやってみましょう！<span class='steps'><i><b>パソコン:</b> Chromeウェブストアで「MetaMask」を検索 → キツネのアイコンを確認 → Chromeに追加</i><i><b>スマホ:</b> アプリストアから公式のMetaMaskアプリをインストール</i><i>「新しいウォレットを作成」→ パスワードを設定</i><i>12単語のシードフレーズが表示されたら、<b>紙に</b>書き写して安全に保管</i></span>",
+    "<span class='warn'>⚠️ 12単語のシードフレーズは、保有するすべての鍵です。\n写真撮影 ❌ メッセンジャーで送る ❌ 誰に聞かれても教えない ❌\n聞いてくる相手は、例外なく詐欺です。</span>",
+    "公式のインストール手順は<a href='https://support.metamask.io/start/getting-started-with-metamask/' target='_blank'>MetaMask公式ドキュメント</a>をご覧ください。",
+    "インストールとウォレットの作成は終わりましたか？"
+  ],c:[["はい、できました！","q_network"],["あとでやります、続けてください","q_network"]]},
+
+  /* ---------- network ---------- */
+  q_network:{p:22,stage:"1/6 ウォレット",m:[
+    "いいですね！ウォレットができたら、次は道を2本ひらきます 🛣",
+    "コインは「チェーン」という道を通ります。ここで使うのは<b>BNBチェーン（黄色い道）</b>と<b>Polygon（紫の道）</b>の2本です。\nウォレットはひとつのまま、走る道を切り替えるだけですよ。",
+    "MetaMaskに、この2つのネットワークは追加されていますか？"
+  ],c:[["はい、両方あります","q_bnb"],["どうやって追加しますか？","how_network"]]},
+
+  how_network:{p:24,m:[
+    "とても簡単です。やりやすい方を選んでくださいね:<span class='steps'><i><b>方法1:</b> MetaMask上部のネットワーク選択をタップ → 「ネットワークを追加」→ 一覧からBNB Smart Chain／Polygonを選択</i><i><b>方法2:</b> <a href='https://chainlist.org' target='_blank'>chainlist.org</a> にアクセス → 検索 → Connect Wallet → Add to MetaMask（自動で追加）</i></span>",
+    "<span class='tip'>公式ガイド: <a href='https://support.metamask.io/networks-and-sidechains/managing-networks/add-a-network-using-chainlist/' target='_blank'>Chainlistでネットワークを追加する</a></span>",
+    "追加は完了しましたか？"
+  ],c:[["完了しました！","q_bnb"]]},
+
+  /* ---------- STEP 2: BNB ---------- */
+  q_bnb:{p:30,stage:"2/6 BNBの準備",m:[
+    "<span class='badge-done'>✓ ウォレット準備完了</span>STEP 2へ進みましょう！",
+    "次は<b>交換に使うBNB</b>が必要です。デナーの場合は<b>およそ$620相当 + 手数料の余裕分</b>が目安になります（例であり、保証されるものではありません）。",
+    "MetaMaskのウォレットに、BNBはもう入っていますか？"
+  ],c:[["はい、十分あります","q_pol"],["いいえ、準備が必要です","q_exchange"]]},
+
+  q_exchange:{p:34,m:[
+    "でしたら取引所で用意して、ウォレットへ送りましょう。",
+    "普段お使いの<b>取引所</b>はありますか？"
+  ],c:[["Binance","ex_binance"],["Bithumb（韓国）","ex_bithumb"],["Upbit（韓国）","ex_upbit"],["取引所は初めてです","ex_none"]]},
+
+  ex_none:{p:36,m:[
+    "大丈夫ですよ、誰にでも最初はありますから 🙂",
+    "登録には一般的に<b>顔写真付きの身分証と、ご本人名義の銀行口座</b>が必要です。本人確認に1日ほどかかることもあるので、早めに済ませておくのがおすすめです。",
+    "どこから始めるか:<span class='steps'><i><b>Binance</b>（グローバル、メールで登録）— BNBを直接取り扱っているので、いちばんシンプルな道です</i><i><b>Upbit／Bithumb</b> — 韓国の取引所。韓国ウォンで入金する場合に便利です</i><i>どちらを選んでも、まず本人確認（KYC）を済ませてください</i></span>",
+    "どの取引所で進めましょうか？"
+  ],c:[["Binance","ex_binance"],["Bithumb","ex_bithumb"],["Upbit","ex_upbit"]]},
+
+  ex_binance:{p:40,m:[
+    "Binanceは<b>BNBを直接</b>用意できるので、いちばんシンプルです！<span class='steps'><i>登録 + 本人確認（KYC）— 顔写真付き身分証、最大48時間ほど</i><i>入金してから、BNBに交換</i><i>POLも$10〜20相当だけ一緒に用意（ドメイン登録と手数料用）</i></span>",
+    "ここからが大切です — <b>ウォレットへ送る（出金）</b>手順:<span class='steps'><i>MetaMaskで自分のアドレスをコピー（0x…）</i><i>Binanceの出金 → BNB → ネットワークは必ず<b>BSC（BEP-20）</b></i><i>POLの出金 → ネットワークは<b>Polygon</b></i><i>まず少額でテスト送金 → 到着を確認 → 残りを送る</i></span>",
+    "<span class='warn'>⚠️ ネットワークを選び間違えると、コインを失うことがあります。確定前に必ず2回確認してください！</span>",
+    "MetaMaskにBNBは届きましたか？"
+  ],c:[["はい、届きました！","q_pol"],["出金がブロックされます（トラベルルール？）","travel_rule"]]},
+
+  ex_bithumb:{p:40,m:[
+    "Bithumbも<b>BNBを直接</b>取り扱っています。<span class='steps'><i>登録 + 銀行口座の連携（<a href='https://support.bithumb.com/hc/ko/articles/51036139415321' target='_blank'>公式ガイド・韓国語</a>）</i><i>ウォンを入金 → BNBに交換</i><i>POLも$10〜20相当を一緒に用意</i></span>",
+    "<span class='warn'>⚠️ BithumbからMetaMaskのような個人ウォレットへ出金する場合、トラベルルールによりウォレット登録と審査が必要になることがあります。まず「個人ウォレット登録」メニューをご確認ください。</span>",
+    "出金するときは<b>BNB → BSC（BEP-20）</b>、<b>POL → Polygon</b>を選び、必ず少額のテスト送金を先に行ってくださいね！",
+    "MetaMaskにBNBは届きましたか？"
+  ],c:[["はい、届きました！","q_pol"],["出金がブロックされます（トラベルルール？）","travel_rule"]]},
+
+  ex_upbit:{p:40,m:[
+    "Upbitにはひとつ特徴があります — <b>BNBを直接は取り扱っていません。</b> そのため道が2つあります。",
+    "<b>ルートA（おすすめ）:</b> Upbitで送金の速いコイン（XRP、TRXなど）に交換 → <b>Binanceへ送る</b> → Binanceの中でBNBに交換 → BSCネットワークでMetaMaskへ出金。",
+    "<b>ルートB:</b> POLはUpbitでも取り扱っています → PolygonネットワークでPOLをそのままMetaMaskへ出金できます。",
+    "<span class='tip'>Upbitから個人ウォレットへ出金するには、先に<a href='https://support.upbit.com/hc/ko/articles/6713306957977' target='_blank'>ウォレットアドレスの登録</a>が必要です（トラベルルール）。MetaMaskはオンラインで登録できます。</span>",
+    "BNBとPOLは、MetaMaskに届きましたか？"
+  ],c:[["はい、届きました！","q_pol"],["出金がブロックされます（トラベルルール？）","travel_rule"]]},
+
+  travel_rule:{p:42,m:[
+    "おそらく<b>トラベルルール</b>ですね — まとまった額を個人ウォレットへ送る前に、そのウォレットを事前登録することを求める規定です。",
+    "解決の手順:<span class='steps'><i>取引所アプリで「個人ウォレット登録」（ホワイトリスト）メニューを探す</i><i>MetaMaskのアドレスを登録し、ウォレットの所有者確認を行う</i><i>Upbit: <a href='https://support.upbit.com/hc/ko/articles/6713306957977' target='_blank'>オンラインで登録可能</a> ／ Bithumb: サポートの審査が必要な場合あり</i><i>承認されたら、もう一度出金を試す</i></span>",
+    "韓国の取引所ごとの方針の比較は<a href='https://www.tokenpost.kr/article-85909' target='_blank'>こちらの記事</a>が参考になります（韓国語）。",
+    "登録と出金は、うまくいきましたか？"
+  ],c:[["はい、解決しました！","q_pol"]]},
+
+  /* ---------- POL ---------- */
+  q_pol:{p:48,stage:"2/6 BNBの準備",m:[
+    "<span class='badge-done'>✓ BNB準備完了</span>",
+    "もうひとつだけ — 少額の<b>POL</b>（$10〜20相当）も必要です。.dexネームの登録料と、道の通行料（ガス代）に使います。",
+    "POLはウォレットにありますか？"
+  ],c:[["はい、あります","q_dex"],["まだです、どうやって用意しますか？","how_pol"]]},
+
+  how_pol:{p:50,m:[
+    "簡単ですよ！<span class='steps'><i>Upbit／Bithumb: POLを検索 → 少額だけ交換 → <b>Polygonネットワーク</b>でMetaMaskへ出金</i><i>Binance: POLに交換 → 出金ネットワークにPolygonを選択</i></span>",
+    "<span class='tip'>MetaMaskのネットワークをPolygonに切り替えないと、POLの残高は表示されません。見当たらなくても慌てないでくださいね！</span>",
+    "準備はできましたか？"
+  ],c:[["準備完了！","q_dex"]]},
+
+  /* ---------- STEP 3: .dex ---------- */
+  q_dex:{p:56,stage:"3/6 .dexネーム",m:[
+    "<span class='badge-done'>✓ コイン準備完了</span>ここからは楽しいステップです 🎨",
+    "読みにくいウォレットアドレス（0x3f8a…）の代わりに使う、<b>自分だけの名札 = .dexドメイン</b>を作りましょう。\nたとえば<b>roy.dex</b>のような名前です。この名前は紹介リンクにも使われます。",
+    ".dexネームは、もうお持ちですか？"
+  ],c:[["はい、あります！","q_primary"],["まだです、作りましょう","how_dex"]]},
+
+  how_dex:{p:60,m:[
+    "では行きましょう。ここからは<b>紫の道（Polygon）</b>です。<span class='steps'><i><a href='https://dexignation.com' target='_blank'>dexignation.com</a> にアクセス（スマホの場合はMetaMaskアプリ内のブラウザで！）</i><i>右上の「ウォレット接続」→ Polygonへの切り替えを承認</i><i>希望の名前を検索 → 期間を選択（1・3・5・10・15年）→ POL／USDT／USDCで支払い</i></span>",
+    "登録には<b>2回の署名</b>があります: ① 申請 → ② 少し待つ → ③ 確定。\n途中でウィンドウを閉じず、最後まで進めてくださいね！",
+    "<span class='tip'>接続はただの「名刺を見せる」動作なので、コインが出ていくことはありません。コインが動くのは「署名」を押したときだけです。</span>",
+    "ネームの登録はできましたか？"
+  ],c:[["完了！自分の名前ができました","q_primary"]]},
+
+  /* ---------- STEP 4: primary name + BNB wallet ---------- */
+  q_primary:{p:68,stage:"4/6 代表ネーム",m:[
+    "<span class='badge-done'>✓ .dexネーム取得</span>",
+    "次はその名前を<b>代表ネーム</b>に指定して、その裏側に<b>リワードを受け取るBNBウォレットアドレス</b>を記録します。\nこれでリワードがご自身のウォレットに届くようになります！",
+    "代表ネームの指定とBNBウォレットの登録は、お済みですか？"
+  ],c:[["両方できました","q_distributor"],["方法を教えてください","how_primary"]]},
+
+  how_primary:{p:72,m:[
+    "引き続きDEXignationで進めます。<span class='steps'><i><b>代表ネーム:</b> マイアカウント → 保有ドメイン → 「代表ネームに指定」→ 署名</i><i><b>BNBウォレット:</b> 自分のドメイン → 「レコード管理」→ アドレスを追加 → チェーンで<b>BNB（BSC）</b>を選択 → アドレスを入力 → 署名</i><i>digmol.comのダッシュボードで正しく表示されるか確認</i></span>",
+    "<span class='warn'>⚠️ ウォレットアドレスは必ずコピー＆ペーストで！ 1文字違うだけで、リワードが届かなくなります。</span>",
+    "完了しましたか？"
+  ],c:[["完了しました！","q_distributor"]]},
+
+  /* ---------- STEP 5: evangelist check + swap ---------- */
+  q_distributor:{p:78,stage:"5/6 MOLスワップ",m:[
+    "<span class='badge-done'>✓ 名札の設定完了</span>いよいよ最後の関門です！",
+    "交換の前にひとつだけ — <b>あなたを案内してくれたエバンジェリストの.dexネーム</b>が必要です。\n交換画面で入力すると<b>割引（最大15%）</b>を受けられ、案内してくれた方にも正当なリワードが届きます。",
+    "エバンジェリストの.dexネームはご存じですか？"
+  ],c:[["はい、知っています！","how_swap"],["いいえ、分かりません…","no_distributor"]]},
+
+  no_distributor:{p:80,m:[
+    "大丈夫です — 方法は2つあります:<span class='steps'><i>このエコシステムを紹介してくれた方がいる場合 → その方に「.dexネームは何ですか？」と聞いてみてください</i><i>紹介してくれた方がいない場合 → punditcode@gmail.com へご連絡いただければ、運営がおつなぎします</i></span>",
+    "<span class='tip'>入力しなくても交換自体はできますが、割引が受けられません。進める前に確認しておくのがおすすめです。</span>",
+    "分かったら、交換に行きましょう！"
+  ],c:[["確認しました、交換へ","how_swap"]]},
+
+  how_swap:{p:86,m:[
+    "さあ、<b>黄色い道（BNBチェーン）</b>に乗り換えて、鉱脈へ降りていきましょう ⛏<span class='steps'><i><a href='https://digmol.com' target='_blank'>digmol.com</a> にアクセス → ウォレット接続 → BSCに切り替え</i><i>スワップ（叙任）画面で、<b>「割引ドメイン（.dex）」欄にエバンジェリストのネームを入力</b></i><i>BNBの数量を入力 → 自動計算されたMOLの数量を確認</i><i>1回署名すると → MOLがウォレットに届きます！</i></span>",
+    "保有MOLが<b>20,000,000</b>に届いた瞬間、叙任ゲージが100%になり<b>デナー誕生</b>です 🎉",
+    "<span class='tip'>交換比率はコントラクトに刻まれているので、交渉も差別もありません。正確な基準レートは、交換画面に表示される値をご確認ください。</span>",
+    "叙任まで完了しましたか？"
+  ],c:[["🎉 デナーになりました！","done_dener"],["今日はここまでにします","summary"]]},
+
+  /* ---------- completion & evangelist branch ---------- */
+  done_dener:{p:92,stage:"6/6 活動開始",m:[
+    "おめでとうございます、守護者さま！ 🛡✨\nエルドラシアの鉱脈に、あなたの叙任が刻まれました。",
+    "これからの日課はとてもシンプルです:<span class='steps'><i>紹介リンクを共有: <b>app.digmol.com/ref?ref=あなたの名前.dex</b></i><i>毎日22:00に集計が締まり → 23:00から受け取り（Claim）が可能に</i><i>受け取っていないリワードは消えず、オンチェーンに積み上がります</i></span>",
+    "最後にひとつだけ — さらに進んで<b>エバンジェリスト</b>になってみたいですか？\n参加者が交換のときにあなたを指定すると、その参加準備規模の5%を受け取れる役割です。"
+  ],c:[["エバンジェリストについて教えて！","how_evangelist"],["デナーで十分です","summary"]]},
+
+  how_evangelist:{p:96,m:[
+    "いい選択ですね。準備はこのように進めます:<span class='steps'><i>保有MOLを<b>30,000,000</b>まで追加で交換（およそ$310相当の追加。例であり、保証されるものではありません）</i><i><b>管理者登録が必須です！</b> punditcode@gmail.com へ登録・有効化をご依頼ください</i><i>digmol.comの「マイ エバンジェリスト ダッシュボード」で割引率（0〜15%）を設定 — ご自身の5%は自動です</i></span>",
+    "エバンジェリストの活動は、ひとことで言えばこれだけです:\n<b>\"交換画面の割引欄に私の名前（あなたの名前.dex）を入れると割引になりますよ！\"</b>\n指定は任意なので、この一言がないとリワードは発生しません。",
+    "<span class='tip'>紹介者リワードとエバンジェリストリワードは別の軸なので、紹介した方があなたを指定すれば、同じ参加に対して両方が適用されます（1件あたり最大25%。例であり、保証されるものではありません）。</span>"
+  ],c:[["完璧です、まとめてください","summary"]]},
+
+  summary:{p:100,stage:"完了",m:[
+    "今日一緒に歩いた道をまとめますね 📋<span class='steps'><i>① MetaMaskウォレットを作成 + BSCとPolygonのネットワークを追加</i><i>② 取引所でBNBとPOLを用意 → ウォレットへ送金（トラベルルールに注意！）</i><i>③ dexignation.comで.dexネームを登録（紫の道）</i><i>④ 代表ネームを指定 + リワードを受け取るBNBウォレットを登録</i><i>⑤ digmol.comでエバンジェリストの.dexを入力 → BNB→MOLを交換 → 20,000,000で叙任</i><i>⑥ （任意）30,000,000 + 管理者登録でエバンジェリスト</i></span>",
+    "画面ごとの詳しい説明と動画は<a href='dener-onboarding.ja.html'>ドキュメント版ガイド</a>にあります。",
+    "<span class='tip'>覚えておきたいのは3つ: シードフレーズは紙にだけ · アドレスはコピー＆ペーストだけ · 出金の前に必ずネットワークを確認。そして — 無理のない範囲で、楽しく参加してくださいね 🙂</span>",
+    "気になることができたら、いつでもまた聞きに来てください。鉱脈でお待ちしています！ ⛏"
+  ],c:[["↺ 最初からやり直す","restart"],["📖 ドキュメント版ガイドを開く","goto_docs"]]},
+};
+
+/* ================= engine ================= */
+const chat = document.getElementById('chat');
+const chin = document.getElementById('chin');
+const fill = document.getElementById('stepfill');
+const stage = document.getElementById('stage');
+const main = document.getElementById('main');
+let busy = false;
+
+function scrollDown(){ main.scrollTop = main.scrollHeight; }
+
+function botBubble(html){
+  const row = document.createElement('div'); row.className = 'row bot';
+  row.innerHTML = '<div class="mini">⛏</div><div class="bubble">' + html + '</div>';
+  chat.appendChild(row); scrollDown();
+}
+function userBubble(text){
+  const row = document.createElement('div'); row.className = 'row user';
+  const b = document.createElement('div'); b.className = 'bubble'; b.textContent = text;
+  row.appendChild(b); chat.appendChild(row); scrollDown();
+}
+function typing(){
+  const row = document.createElement('div'); row.className = 'row bot';
+  row.innerHTML = '<div class="mini">⛏</div><div class="typing"><i></i><i></i><i></i></div>';
+  chat.appendChild(row); scrollDown(); return row;
+}
+
+function show(nodeId){
+  const node = FLOW[nodeId];
+  if(!node) return;
+  busy = true; chin.innerHTML = '';
+  if(node.p) fill.style.width = node.p + '%';
+  if(node.stage) stage.textContent = 'デナーになる · ' + node.stage;
+  let i = 0;
+  (function next(){
+    if(i >= node.m.length){
+      busy = false;
+      node.c.forEach(function(ch, idx){
+        const btn = document.createElement('button');
+        btn.className = 'choice' + (idx > 0 && node.c.length > 2 && idx === node.c.length - 1 ? ' sub' : '');
+        btn.textContent = ch[0];
+        btn.onclick = function(){ if(busy) return; pick(ch[0], ch[1]); };
+        chin.appendChild(btn);
+      });
+      scrollDown(); return;
+    }
+    const t = typing();
+    setTimeout(function(){
+      t.remove(); botBubble(node.m[i]); i++;
+      setTimeout(next, 250);
+    }, Math.min(500 + node.m[i].length * 3, 1300));
+  })();
+}
+
+function pick(label, next){
+  userBubble(label);
+  if(next === 'restart'){ setTimeout(restart, 400); return; }
+  if(next === 'goto_docs'){ location.href = 'dener-onboarding.ja.html'; return; }
+  setTimeout(function(){ show(next); }, 350);
+}
+
+function restart(){
+  chat.innerHTML = ''; chin.innerHTML = ''; fill.style.width = '0';
+  stage.textContent = 'デナーになる · 会話形ガイド';
+  show('start');
+}
+
+show('start');
+
+/* langmenu-close: close the language dropdown on outside click */
+document.addEventListener('click',function(e){
+  document.querySelectorAll('details.langmenu[open]').forEach(function(d){
+    if(!d.contains(e.target)) d.removeAttribute('open');
+  });
+});
+</script>
+</body>
+</html>
