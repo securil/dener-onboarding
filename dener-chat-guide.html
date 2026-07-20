@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>몰리와 함께하는 Dener 되기 — 대화형 가이드</title>
 <meta name="description" content="질문에 답하면서 따라가는 Dener·총판 온보딩 대화형 가이드. 내 상황에 맞는 단계만 골라서 안내받으세요.">
+<link rel="alternate" hreflang="ko" href="dener-chat-guide.html">
+<link rel="alternate" hreflang="en" href="dener-chat-guide.en.html">
 <style>
   :root{
     --dark:#261A0D; --dark2:#3A2A16; --gold:#E8A020; --gold-d:#9C6B06;
@@ -20,11 +22,12 @@
   header .t{text-align:center}
   header .t b{display:block;font-size:15px}
   header .t span{font-size:11.5px;color:#C9B78F}
-  header .hactions{display:flex;gap:8px;align-items:center;justify-content:center}
+  header .hactions{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
   .hbtn{background:var(--dark2);color:#E8DCC8;border:none;border-radius:14px;padding:7px 13px;font-size:12px;cursor:pointer;font-family:inherit}
   .hbtn:hover{background:#4a3720}
   .hbtn.doc{background:var(--gold);color:var(--dark);font-weight:800}
   .hbtn.doc:hover{background:#f5b23c}
+  .hbtn.lang{border:1px solid #4a3720}
   #stepbar{height:4px;background:var(--dark2);flex:none}
   #stepfill{height:100%;width:0;background:var(--gold);transition:width .4s}
 
@@ -73,6 +76,7 @@
   <div class="hactions">
     <button class="hbtn doc" onclick="location.href='dener-onboarding.html'">📖 문서형 가이드</button>
     <button class="hbtn" onclick="restart()">↺ 처음부터</button>
+    <button class="hbtn lang" onclick="location.href='dener-chat-guide.en.html'">EN</button>
   </div>
 </header>
 <div id="stepbar"><div id="stepfill"></div></div>

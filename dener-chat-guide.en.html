@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Becoming a Dener with Molly — Conversational Guide</title>
+<meta name="description" content="A conversational onboarding guide for Dener and Evangelist. Answer a few questions and get only the steps that apply to your situation.">
+<link rel="alternate" hreflang="ko" href="dener-chat-guide.html">
+<link rel="alternate" hreflang="en" href="dener-chat-guide.en.html">
+<style>
+  :root{
+    --dark:#261A0D; --dark2:#3A2A16; --gold:#E8A020; --gold-d:#9C6B06;
+    --ink:#2B2418; --mut:#8C8272; --tint:#FBF5EA; --line:#EDE5D6;
+    --poly:#7B3FE4; --red:#C0392B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Pretendard','Segoe UI',system-ui,-apple-system,sans-serif;background:#F3EDE2;color:var(--ink);height:100dvh;display:flex;flex-direction:column}
+
+  header{background:var(--dark);color:#fff;padding:12px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;flex:none}
+  header .hrow{display:flex;align-items:center;gap:12px}
+  .avatar{width:42px;height:42px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+  header .t{text-align:center}
+  header .t b{display:block;font-size:15px}
+  header .t span{font-size:11.5px;color:#C9B78F}
+  header .hactions{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+  .hbtn{background:var(--dark2);color:#E8DCC8;border:none;border-radius:14px;padding:7px 13px;font-size:12px;cursor:pointer;font-family:inherit}
+  .hbtn:hover{background:#4a3720}
+  .hbtn.doc{background:var(--gold);color:var(--dark);font-weight:800}
+  .hbtn.doc:hover{background:#f5b23c}
+  .hbtn.lang{border:1px solid #4a3720}
+  #stepbar{height:4px;background:var(--dark2);flex:none}
+  #stepfill{height:100%;width:0;background:var(--gold);transition:width .4s}
+
+  main{flex:1;overflow-y:auto;padding:20px 14px 12px;-webkit-overflow-scrolling:touch}
+  .chat{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+
+  .row{display:flex;gap:8px;align-items:flex-end}
+  .row.bot{justify-content:flex-start}
+  .row.user{justify-content:flex-end}
+  .mini{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+  .bubble{max-width:82%;padding:11px 15px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-line;box-shadow:0 2px 6px rgba(38,26,13,.07)}
+  .bot .bubble{background:#fff;border-bottom-left-radius:5px}
+  .user .bubble{background:var(--gold);color:var(--dark);font-weight:700;border-bottom-right-radius:5px}
+  .bubble b{color:var(--gold-d)}
+  .user .bubble b{color:var(--dark)}
+  .bubble a{color:var(--poly);font-weight:700}
+  .bubble .warn{display:block;margin-top:8px;background:#FBEAE6;color:var(--red);font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:10px}
+  .bubble .tip{display:block;margin-top:8px;background:var(--tint);color:#5A5142;font-size:12.5px;padding:8px 12px;border-radius:10px}
+  .bubble .steps{display:block;margin-top:8px;background:var(--tint);border-radius:10px;padding:10px 12px 10px 14px;font-size:13px}
+  .bubble .steps i{display:block;font-style:normal;padding:4px 0;color:#4A4234}
+  .bubble .steps i::before{content:"▸ ";color:var(--gold)}
+
+  .typing{display:inline-flex;gap:4px;padding:14px 16px;background:#fff;border-radius:16px;border-bottom-left-radius:5px}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#C9B78F;animation:bl 1s infinite}
+  .typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+  @keyframes bl{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+
+  #choices{flex:none;background:linear-gradient(to top,#F3EDE2 80%,transparent);padding:10px 14px 18px}
+  .ch-in{max-width:680px;margin:0 auto;display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}
+  .choice{border:2px solid var(--gold);background:#fff;color:var(--gold-d);font-weight:800;font-size:13.5px;padding:11px 18px;border-radius:22px;cursor:pointer;font-family:inherit;transition:all .15s}
+  .choice:hover{background:var(--gold);color:var(--dark)}
+  .choice.sub{border-color:var(--line);color:var(--mut);font-weight:600}
+  .choice.sub:hover{background:var(--tint);color:var(--gold-d)}
+
+  .badge-done{display:inline-block;background:#E6F3E6;color:#2E7D32;font-size:12px;font-weight:800;padding:3px 10px;border-radius:10px;margin-right:4px}
+  footer{flex:none;text-align:center;font-size:10.5px;color:var(--mut);padding:6px 12px 10px;background:#F3EDE2}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <div class="avatar">⛏</div>
+    <div class="t"><b>Molly — Guide of the Lode</b><span id="stage">Becoming a Dener · conversational guide</span></div>
+  </div>
+  <div class="hactions">
+    <button class="hbtn doc" onclick="location.href='dener-onboarding.en.html'">📖 Document guide</button>
+    <button class="hbtn" onclick="restart()">↺ Start over</button>
+    <button class="hbtn lang" onclick="location.href='dener-chat-guide.html'">한국어</button>
+  </div>
+</header>
+<div id="stepbar"><div id="stepfill"></div></div>
+
+<main id="main"><div class="chat" id="chat"></div></main>
+
+<div id="choices"><div class="ch-in" id="chin"></div></div>
+
+<footer>This guide is informational material about how to participate in the ecosystem and is not investment advice · rewards are not guaranteed · © 2026 MolePin Community</footer>
+
+<script>
+/* ================= conversation script ================= */
+const FLOW = {
+  start:{p:5,m:[
+    "Hello! I'm <b>Molly</b>, guide of the Eldorasian lode ⛏",
+    "I'll walk you through becoming a <b>Dener</b> — a guardian of a fallen kingdom — one question at a time.\nYou only get the steps you actually need, so this goes quickly!",
+    "First, one question. Do you already know <b>what a Dener is</b>?"
+  ],c:[["Yes, let's start","q_wallet"],["No, please explain","what_dener"]]},
+
+  what_dener:{p:8,m:[
+    "Sure — one minute, and you'll have it 🙂",
+    "A <b>Dener</b> is a partner in the MOL ecosystem. Holding <b>20,000,000</b> MOL (about $620 equivalent) opens the role, and the designation is recorded on the blockchain.",
+    "Being a Dener opens up:<span class='steps'><i>Daily eligibility to swap MOL ↔ BNB</i><i>Rewards based on the participation amounts of people you introduce (10% / 5%)</i><i>Missions that mine MOL by watching ads</i></span>",
+    "<span class='tip'>Rewards follow from activity and are never guaranteed. The principle is simple: participate only within a range that doesn't strain you.</span>Ready to begin?"
+  ],c:[["Yes, let's go!","q_wallet"]]},
+
+  /* ---------- STEP 1: wallet ---------- */
+  q_wallet:{p:12,stage:"1/6 Wallet",m:[
+    "This is STEP 1. To become a Dener you need two coins, <b>BNB and POL</b>, and <b>a wallet</b> to hold them.",
+    "Do you already have a <b>MetaMask</b> wallet? 🦊"
+  ],c:[["Yes, I do","q_network"],["No, I don't","how_wallet"],["What is MetaMask?","what_wallet"]]},
+
+  what_wallet:{p:14,m:[
+    "MetaMask is <b>a coin vault inside your phone or browser</b>. The fox icon is its trademark 🦊",
+    "It works much like a banking app, with one crucial difference — <b>you hold the key (a 12-word seed phrase) yourself, not the bank</b>. That's why those 12 words matter so much.",
+    "Shall I show you how to create one?"
+  ],c:[["Yes, let's create one","how_wallet"]]},
+
+  how_wallet:{p:16,m:[
+    "Follow along!<span class='steps'><i><b>Desktop:</b> search the Chrome Web Store for 'MetaMask' → confirm the fox icon → Add to Chrome</i><i><b>Mobile:</b> install the official MetaMask app from your app store</i><i>'Create a new wallet' → set a password</i><i>When the 12-word seed phrase appears, write it <b>on paper</b> and store it safely</i></span>",
+    "<span class='warn'>⚠️ Your 12-word seed phrase is the key to everything you hold.\nNo photos ❌ No messenger ❌ Never tell anyone who asks ❌\nAnyone who asks for it is a scammer, without exception.</span>",
+    "For the official installation guide, see the <a href='https://support.metamask.io/start/getting-started-with-metamask/' target='_blank'>MetaMask documentation</a>.",
+    "Have you finished installing and creating the wallet?"
+  ],c:[["Yes, done!","q_network"],["I'll do it later, keep going","q_network"]]},
+
+  /* ---------- network ---------- */
+  q_network:{p:22,stage:"1/6 Wallet",m:[
+    "Great! Once the wallet exists, you need to open two roads 🛣",
+    "Coins travel along roads called 'chains', and we use two: <b>BNB Chain (the yellow road)</b> and <b>Polygon (the purple road)</b>.\nOne wallet — you just switch which road you're on.",
+    "Are both networks added to your MetaMask?"
+  ],c:[["Yes, both","q_bnb"],["How do I add them?","how_network"]]},
+
+  how_network:{p:24,m:[
+    "Easy. Pick whichever method suits you:<span class='steps'><i><b>Method 1:</b> tap the network selector at the top of MetaMask → 'Add network' → pick BNB Smart Chain / Polygon from the list</i><i><b>Method 2:</b> go to <a href='https://chainlist.org' target='_blank'>chainlist.org</a> → search → Connect Wallet → Add to MetaMask (added automatically)</i></span>",
+    "<span class='tip'>Official guide: <a href='https://support.metamask.io/networks-and-sidechains/managing-networks/add-a-network-using-chainlist/' target='_blank'>Add a network using Chainlist</a></span>",
+    "All added?"
+  ],c:[["Done!","q_bnb"]]},
+
+  /* ---------- STEP 2: BNB ---------- */
+  q_bnb:{p:30,stage:"2/6 Obtaining BNB",m:[
+    "<span class='badge-done'>✓ Wallet ready</span>On to STEP 2!",
+    "Now you need <b>the BNB you'll use for the swap</b> — about <b>$620 equivalent plus a margin for fees</b> at Dener level.",
+    "Is there already BNB in your MetaMask wallet?"
+  ],c:[["Yes, enough of it","q_pol"],["No, I need to get some","q_exchange"]]},
+
+  q_exchange:{p:34,m:[
+    "Then you'll obtain it on an exchange and send it to your wallet.",
+    "Do you already use <b>an exchange</b>?"
+  ],c:[["Binance","ex_binance"],["Bithumb (KR)","ex_bithumb"],["Upbit (KR)","ex_upbit"],["This is my first time","ex_none"]]},
+
+  ex_none:{p:36,m:[
+    "That's fine — everyone starts somewhere 🙂",
+    "Signing up generally needs <b>a photo ID and a bank account in your own name</b>. Verification can take about a day, so it's worth doing early.",
+    "Where to start:<span class='steps'><i><b>Binance</b> (global, email sign-up) — the simplest route, since it lists BNB directly</i><i><b>Upbit / Bithumb</b> — Korean exchanges; useful if you're depositing Korean won</i><i>Whichever you choose, complete identity verification (KYC) first</i></span>",
+    "Which exchange would you like to go with?"
+  ],c:[["Binance","ex_binance"],["Bithumb","ex_bithumb"],["Upbit","ex_upbit"]]},
+
+  ex_binance:{p:40,m:[
+    "Binance is the simplest, because you can obtain <b>BNB directly</b>!<span class='steps'><i>Sign up + identity verification (KYC) — photo ID, up to 48 hours</i><i>Fund the account, then exchange for BNB</i><i>Obtain $10–20 equivalent of POL too (for domain registration and fees)</i></span>",
+    "Now the important part — <b>sending it to your wallet (withdrawal)</b>:<span class='steps'><i>Copy your address from MetaMask (0x…)</i><i>Binance withdrawal → BNB → the network must be <b>BSC (BEP-20)</b></i><i>POL withdrawal → network <b>Polygon</b></i><i>Send a small test first → confirm arrival → then send the rest</i></span>",
+    "<span class='warn'>⚠️ Picking the wrong network can lose your coins. Check twice before confirming!</span>",
+    "Has the BNB arrived in MetaMask?"
+  ],c:[["Yes, it arrived!","q_pol"],["Withdrawal is blocked (Travel Rule?)","travel_rule"]]},
+
+  ex_bithumb:{p:40,m:[
+    "Bithumb also handles <b>BNB directly</b>.<span class='steps'><i>Sign up + link a bank account (<a href='https://support.bithumb.com/hc/ko/articles/51036139415321' target='_blank'>official guide, Korean</a>)</i><i>Deposit KRW → exchange for BNB</i><i>Obtain $10–20 equivalent of POL as well</i></span>",
+    "<span class='warn'>⚠️ Withdrawing from Bithumb to a personal wallet like MetaMask may require wallet registration and review under the Travel Rule. Check the 'personal wallet registration' menu first.</span>",
+    "When withdrawing, choose <b>BNB → BSC (BEP-20)</b> and <b>POL → Polygon</b>, and always send a small test first!",
+    "Has the BNB arrived in MetaMask?"
+  ],c:[["Yes, it arrived!","q_pol"],["Withdrawal is blocked (Travel Rule?)","travel_rule"]]},
+
+  ex_upbit:{p:40,m:[
+    "Upbit has one quirk — <b>it does not handle BNB directly.</b> So there are two routes.",
+    "<b>Route A (recommended):</b> on Upbit, exchange into a fast-transfer coin (XRP, TRX, …) → <b>send it to Binance</b> → exchange for BNB there → withdraw to MetaMask over BSC.",
+    "<b>Route B:</b> Upbit does handle POL → withdraw POL straight to MetaMask over the Polygon network.",
+    "<span class='tip'>Withdrawing from Upbit to a personal wallet requires <a href='https://support.upbit.com/hc/ko/articles/6713306957977' target='_blank'>registering the wallet address</a> first (Travel Rule). MetaMask can be registered online.</span>",
+    "Have BNB and POL arrived in MetaMask?"
+  ],c:[["Yes, they arrived!","q_pol"],["Withdrawal is blocked (Travel Rule?)","travel_rule"]]},
+
+  travel_rule:{p:42,m:[
+    "That's most likely the <b>Travel Rule</b> — a regulation requiring you to register a personal wallet in advance before sending larger amounts to it.",
+    "How to resolve it:<span class='steps'><i>Find the 'personal wallet registration' (whitelist) menu in your exchange app</i><i>Register your MetaMask address and verify wallet ownership</i><i>Upbit: <a href='https://support.upbit.com/hc/ko/articles/6713306957977' target='_blank'>can be registered online</a> / Bithumb: may require a support review</i><i>Once approved, try the withdrawal again</i></span>",
+    "For a comparison of policies across Korean exchanges, <a href='https://www.tokenpost.kr/article-85909' target='_blank'>this write-up</a> is useful (Korean).",
+    "Registered and withdrawn successfully?"
+  ],c:[["Yes, sorted!","q_pol"]]},
+
+  /* ---------- POL ---------- */
+  q_pol:{p:48,stage:"2/6 Obtaining BNB",m:[
+    "<span class='badge-done'>✓ BNB ready</span>",
+    "One more thing — you also need a small amount of <b>POL</b> ($10–20 equivalent), for the .dex name registration fee and the road tolls (gas fees).",
+    "Do you have POL in your wallet?"
+  ],c:[["Yes, I do","q_dex"],["Not yet — how do I get it?","how_pol"]]},
+
+  how_pol:{p:50,m:[
+    "Simple!<span class='steps'><i>Upbit / Bithumb: search POL → exchange a small amount → withdraw to MetaMask over the <b>Polygon network</b></i><i>Binance: exchange for POL → choose Polygon as the withdrawal network</i></span>",
+    "<span class='tip'>You have to switch MetaMask to the Polygon network to see your POL balance. Don't panic when it isn't there!</span>",
+    "All set?"
+  ],c:[["All set!","q_dex"]]},
+
+  /* ---------- STEP 3: .dex ---------- */
+  q_dex:{p:56,stage:"3/6 .dex name",m:[
+    "<span class='badge-done'>✓ Coins ready</span>Now for the fun part 🎨",
+    "Time to create <b>your own name tag, a .dex domain</b>, to use instead of an unreadable wallet address (0x3f8a…).\nSomething like <b>roy.dex</b>. This name also goes into your referral link.",
+    "Do you already have a .dex name?"
+  ],c:[["Yes, I do!","q_primary"],["Not yet — let's make one","how_dex"]]},
+
+  how_dex:{p:60,m:[
+    "Here we go. From here on we're on the <b>purple road (Polygon)</b>.<span class='steps'><i>Go to <a href='https://dexignation.com' target='_blank'>dexignation.com</a> (on mobile, use the browser inside the MetaMask app)</i><i>'Connect wallet' at the top right → approve the switch to Polygon</i><i>Search for the name you want → choose a period (1/3/5/10/15 years) → pay with POL, USDT, or USDC</i></span>",
+    "Registration takes <b>two signatures</b>: ① commit → ② a short wait → ③ confirm.\nDon't close the window in between — see it through to the end!",
+    "<span class='tip'>Connecting is just 'showing a business card' — no coins leave your wallet. Coins only move when you press 'Sign'.</span>",
+    "Is your name registered?"
+  ],c:[["Done! I have my name","q_primary"]]},
+
+  /* ---------- STEP 4: primary name + BNB wallet ---------- */
+  q_primary:{p:68,stage:"4/6 Primary name",m:[
+    "<span class='badge-done'>✓ .dex name secured</span>",
+    "Now designate that name as your <b>primary name</b>, and record the <b>BNB wallet address that will receive rewards</b> behind it.\nThis is what routes rewards to your wallet!",
+    "Have you set the primary name and registered the BNB wallet?"
+  ],c:[["Both done","q_distributor"],["Show me how","how_primary"]]},
+
+  how_primary:{p:72,m:[
+    "We continue on DEXignation.<span class='steps'><i><b>Primary name:</b> your account → your domains → 'Set as primary name' → sign</i><i><b>BNB wallet:</b> your domain → 'Manage records' → add an address → choose <b>BNB (BSC)</b> as the chain → enter the address → sign</i><i>Confirm it displays correctly on the digmol.com dashboard</i></span>",
+    "<span class='warn'>⚠️ Always copy and paste the wallet address. A single wrong character means the rewards never reach you.</span>",
+    "All done?"
+  ],c:[["Done!","q_distributor"]]},
+
+  /* ---------- STEP 5: evangelist check + swap ---------- */
+  q_distributor:{p:78,stage:"5/6 MOL swap",m:[
+    "<span class='badge-done'>✓ Name tag configured</span>Last gate ahead!",
+    "One thing before the swap — you need <b>the .dex name of the evangelist who introduced you</b>.\nEntering it on the swap screen gets you <b>a discount (up to 15%)</b> and gives them the reward they're due.",
+    "Do you know your evangelist's .dex name?"
+  ],c:[["Yes, I do!","how_swap"],["No, I don't…","no_distributor"]]},
+
+  no_distributor:{p:80,m:[
+    "No problem — two ways to handle it:<span class='steps'><i>If someone introduced you to this ecosystem → just ask them \"what's your .dex name?\"</i><i>If nobody introduced you → contact the team at punditcode@gmail.com and they'll connect you</i></span>",
+    "<span class='tip'>The swap works without it, but you'd miss the discount — worth checking before you proceed.</span>",
+    "Once you've got it, let's go swap!"
+  ],c:[["Got it, let's swap","how_swap"]]},
+
+  how_swap:{p:86,m:[
+    "Right — switch over to the <b>yellow road (BNB Chain)</b> and down into the lode ⛏<span class='steps'><i>Go to <a href='https://digmol.com' target='_blank'>digmol.com</a> → connect wallet → switch to BSC</i><i>On the swap (designation) screen, <b>enter the evangelist's name in the 'Discount domain (.dex)' field</b></i><i>Enter the BNB amount → check the MOL amount calculated automatically</i><i>Sign once → MOL arrives in your wallet!</i></span>",
+    "The moment your MOL holding reaches <b>20,000,000</b>, the designation gauge hits 100% and <b>you are a Dener</b> 🎉",
+    "<span class='tip'>The exchange ratio is written into the contract — no haggling, no favouritism. For the exact ratio, go by the value shown on the swap screen.</span>",
+    "Have you received the designation?"
+  ],c:[["🎉 I'm a Dener!","done_dener"],["I'll stop here for now","summary"]]},
+
+  /* ---------- completion & evangelist branch ---------- */
+  done_dener:{p:92,stage:"6/6 Getting active",m:[
+    "Congratulations, guardian! 🛡✨\nYour designation is carved into the lode of Eldorasia.",
+    "Your routine from here is simple:<span class='steps'><i>Share your referral link: <b>app.digmol.com/ref?ref=yourname.dex</b></i><i>Tallying closes at 22:00 daily → claiming opens from 23:00</i><i>Unclaimed rewards don't disappear — they accumulate on-chain</i></span>",
+    "One last question — would you like to go further and become an <b>Evangelist</b>?\nThat's the role that receives 5% of a participation amount whenever a participant designates you."
+  ],c:[["Tell me about Evangelist!","how_evangelist"],["Dener is enough for me","summary"]]},
+
+  how_evangelist:{p:96,m:[
+    "Good choice. Here's how you prepare:<span class='steps'><i>Swap additional MOL up to <b>30,000,000</b> (roughly $310 equivalent more)</i><i><b>Administrator registration is required!</b> Email punditcode@gmail.com to request registration and activation</i><i>On digmol.com, open 'My evangelist dashboard' and set your discount rate (0–15%) — your own 5% is automatic</i></span>",
+    "The whole of evangelist activity comes down to one sentence:\n<b>\"Put my name (yourname.dex) in the discount field on the swap screen and you get a discount!\"</b>\nDesignation is optional, so without saying it, no reward is generated.",
+    "<span class='tip'>Referrer rewards and evangelist rewards are separate tracks, so if someone you introduced also designates you, both apply to the same participation (up to 25% on a single participation; an example, not a guarantee).</span>"
+  ],c:[["Perfect — give me a summary","summary"]]},
+
+  summary:{p:100,stage:"Complete",m:[
+    "Here's the path we walked today 📋<span class='steps'><i>① Create a MetaMask wallet + add the BSC and Polygon networks</i><i>② Obtain BNB and POL on an exchange → send to your wallet (mind the Travel Rule!)</i><i>③ Register a .dex name on dexignation.com (the purple road)</i><i>④ Set the primary name + register the BNB wallet that receives rewards</i><i>⑤ On digmol.com, enter the evangelist's .dex → swap BNB→MOL → 20,000,000 = designation</i><i>⑥ (Optional) 30,000,000 + administrator registration = Evangelist</i></span>",
+    "Screen-by-screen detail and the videos are in the <a href='dener-onboarding.en.html'>document guide</a>.",
+    "<span class='tip'>Three things to remember: seed phrase on paper only · addresses by copy-paste only · check the network before every withdrawal. And — participate within a range that doesn't strain you, and enjoy it 🙂</span>",
+    "Come back and ask again any time. I'll be waiting in the lode! ⛏"
+  ],c:[["↺ Start over","restart"],["📖 Open the document guide","goto_docs"]]},
+};
+
+/* ================= engine ================= */
+const chat = document.getElementById('chat');
+const chin = document.getElementById('chin');
+const fill = document.getElementById('stepfill');
+const stage = document.getElementById('stage');
+const main = document.getElementById('main');
+let busy = false;
+
+function scrollDown(){ main.scrollTop = main.scrollHeight; }
+
+function botBubble(html){
+  const row = document.createElement('div'); row.className = 'row bot';
+  row.innerHTML = '<div class="mini">⛏</div><div class="bubble">' + html + '</div>';
+  chat.appendChild(row); scrollDown();
+}
+function userBubble(text){
+  const row = document.createElement('div'); row.className = 'row user';
+  const b = document.createElement('div'); b.className = 'bubble'; b.textContent = text;
+  row.appendChild(b); chat.appendChild(row); scrollDown();
+}
+function typing(){
+  const row = document.createElement('div'); row.className = 'row bot';
+  row.innerHTML = '<div class="mini">⛏</div><div class="typing"><i></i><i></i><i></i></div>';
+  chat.appendChild(row); scrollDown(); return row;
+}
+
+function show(nodeId){
+  const node = FLOW[nodeId];
+  if(!node) return;
+  busy = true; chin.innerHTML = '';
+  if(node.p) fill.style.width = node.p + '%';
+  if(node.stage) stage.textContent = 'Becoming a Dener · ' + node.stage;
+  let i = 0;
+  (function next(){
+    if(i >= node.m.length){
+      busy = false;
+      node.c.forEach(function(ch, idx){
+        const btn = document.createElement('button');
+        btn.className = 'choice' + (idx > 0 && node.c.length > 2 && idx === node.c.length - 1 ? ' sub' : '');
+        btn.textContent = ch[0];
+        btn.onclick = function(){ if(busy) return; pick(ch[0], ch[1]); };
+        chin.appendChild(btn);
+      });
+      scrollDown(); return;
+    }
+    const t = typing();
+    setTimeout(function(){
+      t.remove(); botBubble(node.m[i]); i++;
+      setTimeout(next, 250);
+    }, Math.min(500 + node.m[i].length * 3, 1300));
+  })();
+}
+
+function pick(label, next){
+  userBubble(label);
+  if(next === 'restart'){ setTimeout(restart, 400); return; }
+  if(next === 'goto_docs'){ location.href = 'dener-onboarding.en.html'; return; }
+  setTimeout(function(){ show(next); }, 350);
+}
+
+function restart(){
+  chat.innerHTML = ''; chin.innerHTML = ''; fill.style.width = '0';
+  stage.textContent = 'Becoming a Dener · conversational guide';
+  show('start');
+}
+
+show('start');
+</script>
+</body>
+</html>
