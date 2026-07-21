@@ -34,6 +34,8 @@
   .langmenu>summary::-webkit-details-marker{display:none}
   .langmenu>summary::marker{content:""}
   .langmenu>summary:hover{background:#4a3720;color:#fff}
+  .langmenu>summary .caret{display:inline-block;font-size:9px;line-height:1;transition:transform .18s;opacity:.8}
+  .langmenu[open]>summary .caret{transform:rotate(180deg)}
   .langmenu[open]>summary{background:var(--gold);border-color:var(--gold);color:var(--dark)}
   .langlist{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-width:152px;box-shadow:0 10px 28px rgba(38,26,13,.22);z-index:200;display:flex;flex-direction:column;gap:2px}
   .langlist a{display:block;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
@@ -88,7 +90,7 @@
     <button class="hbtn doc" onclick="location.href='dener-onboarding.html'">📖 문서형 가이드</button>
     <button class="hbtn" onclick="restart()">↺ 처음부터</button>
     <details class="langmenu">
-      <summary>🌐 한국어</summary>
+      <summary>🌐 한국어 <span class="caret" aria-hidden="true">▾</span></summary>
       <div class="langlist">
       <a href="dener-chat-guide.html" class="on" aria-current="true">한국어</a>
       <a href="dener-chat-guide.en.html">English</a>

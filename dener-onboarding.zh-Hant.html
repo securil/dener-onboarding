@@ -27,18 +27,20 @@
 
   /* ===== nav ===== */
   nav{position:sticky;top:0;background:rgba(38,26,13,.97);z-index:90;padding:0 16px}
-  .nav-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:8px;height:56px;padding-right:120px;overflow-x:auto}
+  .nav-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:8px;height:56px}
+  .nav-scroll{display:flex;align-items:center;gap:8px;min-width:0;flex:0 1 auto;overflow-x:auto}
   .nav-logo{color:#fff;font-weight:800;font-size:15px;white-space:nowrap;margin-right:8px}
   .nav-logo span{color:var(--gold)}
   nav a.step-link{color:#D8CCB8;text-decoration:none;font-size:12.5px;white-space:nowrap;padding:6px 10px;border-radius:14px}
   nav a.step-link:hover{background:var(--dark2);color:#fff}
   nav a.step-link.done{color:var(--gold);font-weight:700}
-  nav{position:relative}
-  .langmenu{position:absolute;right:16px;top:11px;z-index:120}
+  .langmenu{position:relative;flex:none;z-index:120}
   .langmenu>summary{list-style:none;cursor:pointer;font-size:12px;font-weight:800;padding:6px 12px;border-radius:14px;border:1px solid var(--dark2);background:var(--dark2);color:#D8CCB8;white-space:nowrap;display:flex;align-items:center;gap:5px}
   .langmenu>summary::-webkit-details-marker{display:none}
   .langmenu>summary::marker{content:""}
   .langmenu>summary:hover{background:#4a3720;color:#fff}
+  .langmenu>summary .caret{display:inline-block;font-size:9px;line-height:1;transition:transform .18s;opacity:.8}
+  .langmenu[open]>summary .caret{transform:rotate(180deg)}
   .langmenu[open]>summary{background:var(--gold);border-color:var(--gold);color:var(--dark)}
   .langlist{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;min-width:152px;box-shadow:0 10px 28px rgba(38,26,13,.22);display:flex;flex-direction:column;gap:2px}
   .langlist a{display:block;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
@@ -169,6 +171,7 @@
 
 <nav>
   <div class="nav-in">
+    <div class="nav-scroll">
     <div class="nav-logo">DENER <span>指南</span></div>
     <a class="step-link" href="#step1" data-step="1">1 交易所</a>
     <a class="step-link" href="#step2" data-step="2">2 MetaMask</a>
@@ -178,16 +181,17 @@
     <a class="step-link" href="#step6" data-step="6">6 佈道者</a>
     <a class="step-link" href="#faq">常見問題</a>
     <a class="step-link" href="#gloss">名詞解釋</a>
-  </div>
-  <details class="langmenu">
-    <summary>🌐 繁體中文</summary>
+    </div>
+    <details class="langmenu">
+    <summary>🌐 繁體中文 <span class="caret" aria-hidden="true">▾</span></summary>
     <div class="langlist">
     <a href="dener-onboarding.html">한국어</a>
     <a href="dener-onboarding.en.html">English</a>
     <a href="dener-onboarding.ja.html">日本語</a>
     <a href="dener-onboarding.zh-Hant.html" class="on" aria-current="true">繁體中文</a>
     </div>
-  </details>
+    </details>
+  </div>
 </nav>
 
 <header>
